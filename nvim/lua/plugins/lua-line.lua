@@ -15,12 +15,12 @@ return {
             magenta = rp.rose,
             blue = rp.pine,
             red = rp.love,
-            none = rp.base,
+            none = rp.base
         }
 
         local function mode_color()
             -- auto change color according to neovims mode
-            local mode_color = {
+            local mode_colors = {
                 n = colors.red,
                 i = colors.green,
                 v = colors.blue,
@@ -40,10 +40,10 @@ return {
                 rm = colors.cyan,
                 ["r?"] = colors.cyan,
                 ["!"] = colors.red,
-                t = colors.red,
+                t = colors.red
             }
             return {
-                fg = mode_color[vim.fn.mode()],
+                fg = mode_colors[vim.fn.mode()]
             }
         end
 
@@ -58,7 +58,7 @@ return {
                 local filepath = vim.fn.expand("%:p:h")
                 local gitdir = vim.fn.finddir(".git", filepath .. ";")
                 return gitdir and #gitdir > 0 and #gitdir < #filepath
-            end,
+            end
         }
 
         -- Config
@@ -75,16 +75,16 @@ return {
                     normal = {
                         c = {
                             fg = colors.fg,
-                            bg = colors.bg,
-                        },
+                            bg = colors.bg
+                        }
                     },
                     inactive = {
                         c = {
                             fg = colors.fg,
-                            bg = colors.bg,
-                        },
-                    },
-                },
+                            bg = colors.bg
+                        }
+                    }
+                }
             },
             sections = {
                 -- these are to remove the defaults
@@ -94,7 +94,7 @@ return {
                 lualine_z = {},
                 -- These will be filled later
                 lualine_c = {},
-                lualine_x = {},
+                lualine_x = {}
             },
             inactive_sections = {
                 -- these are to remove the defaults
@@ -103,8 +103,8 @@ return {
                 lualine_y = {},
                 lualine_z = {},
                 lualine_c = {},
-                lualine_x = {},
-            },
+                lualine_x = {}
+            }
         }
 
         -- Inserts a component in lualine_c at left section
@@ -123,9 +123,8 @@ return {
             end,
             color = mode_color,
             padding = {
-                left = 0,
-                right = 1,
-            }, -- We don't need space before this
+                right = 1
+            } -- We don't need space before this
         })
 
         left({
@@ -133,97 +132,117 @@ return {
             "mode",
             color = mode_color,
             padding = {
-                right = 1,
-            },
+                right = 1
+            }
         })
 
-        left({
+        --[[ left({
             -- filesize component
             "filesize",
             cond = conditions.buffer_not_empty,
-        })
+        }) ]]
 
         left({
             "filename",
             cond = conditions.buffer_not_empty,
             color = {
                 fg = colors.magenta,
-                gui = "bold",
-            },
+                gui = "bold"
+            }
         })
 
-        left({ "location" })
+        left({"location"})
 
         left({
             "progress",
             color = {
                 fg = colors.fg,
-                gui = "bold",
-            },
+                gui = "bold"
+            }
         })
 
         left({
             "diagnostics",
-            sources = { "nvim_diagnostic" },
+            sources = {"nvim_diagnostic"},
             symbols = {
                 error = " ",
                 warn = " ",
-                info = " ",
+                info = " "
             },
             diagnostics_color = {
                 color_error = {
-                    fg = colors.red,
+                    fg = colors.red
                 },
                 color_warn = {
-                    fg = colors.yellow,
+                    fg = colors.yellow
                 },
                 color_info = {
-                    fg = colors.cyan,
-                },
-            },
+                    fg = colors.cyan
+                }
+            }
+        })
+
+        left({
+            function()
+                return ""
+            end,
+            color = mode_color,
+            padding = {
+                left = 1
+            } -- We don't need space before this
         })
 
         -- Insert mid section. You can make any number of sections in neovim :)
         -- for lualine it's any number greater then 2
-        left({
-            function()
-                return "%="
-            end,
-        })
+        left({function()
+            return "%="
+        end})
 
         left({
             -- Lsp server name .
             function()
-                local msg = "No Active Lsp"
+                local msg = "No Active Lsp "
                 local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
                 local clients = vim.lsp.get_active_clients()
                 if next(clients) == nil then
                     return msg
                 end
+                local lsp = {}
                 for _, client in ipairs(clients) do
                     local filetypes = client.config.filetypes
                     if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-                        return client.name
+                        table.insert(lsp, client.name)
                     end
                 end
-                return msg
+                return table.concat(lsp, ", ") .. " "
             end,
-            icon = " LSP:",
+            icon = " LSP:",
             color = {
-                fg = "#ffffff",
-                gui = "bold",
-            },
+                fg = rp.text,
+                gui = "bold"
+            }
         })
 
         -- Add components to right sections
+
+        right({
+            function()
+                return ""
+            end,
+            color = mode_color,
+            padding = {
+                right = 1
+            }
+        })
+
         right({
             "o:encoding", -- option component same as &encoding in viml
             fmt = string.upper, -- I'm not sure why it's upper case either ;)
             cond = conditions.hide_in_width,
             color = {
                 fg = colors.green,
-                gui = "bold",
-            },
+                gui = "bold"
+            }
         })
 
         right({
@@ -232,8 +251,8 @@ return {
             icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
             color = {
                 fg = colors.green,
-                gui = "bold",
-            },
+                gui = "bold"
+            }
         })
 
         right({
@@ -241,30 +260,30 @@ return {
             icon = "",
             color = {
                 fg = colors.violet,
-                gui = "bold",
-            },
+                gui = "bold"
+            }
         })
 
         right({
             "diff",
             -- Is it me or the symbol for modified us really weird
             symbols = {
-                added = " ",
-                modified = "󰝤 ",
-                removed = " ",
+                added = "[+] ",
+                modified = "[~] ",
+                removed = "[-] "
             },
             diff_color = {
                 added = {
-                    fg = colors.green,
+                    fg = colors.green
                 },
                 modified = {
-                    fg = colors.orange,
+                    fg = colors.orange
                 },
                 removed = {
-                    fg = colors.red,
-                },
+                    fg = colors.red
+                }
             },
-            cond = conditions.hide_in_width,
+            cond = conditions.hide_in_width
         })
 
         right({
@@ -273,10 +292,10 @@ return {
             end,
             color = mode_color,
             padding = {
-                left = 1,
-            },
+                left = 1
+            }
         })
 
         lualine.setup(config)
-    end,
+    end
 }
