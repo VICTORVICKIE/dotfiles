@@ -28,7 +28,7 @@ $WarningPreference = "SilentlyContinue"
 
 # Neovim Mode / Output is Redirected
 if ([System.Console]::IsOutputRedirected){
-    $PSStyle.OutputRendering = [System.Management.Automation.OutputRendering]::PlainText;
+    $PSStyle.OutputRendering = [OutputRendering]::PlainText;
 } else {
     Import-Module -Name Terminal-Icons
     if ($host.Name -eq 'ConsoleHost') {

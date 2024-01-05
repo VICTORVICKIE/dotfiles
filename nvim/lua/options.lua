@@ -1,32 +1,17 @@
 -- Neovide
 if vim.g.neovide then
-	vim.g.neovide_transparency = 0.99
-	vim.g.neovide_refresh_rate = 144
+    vim.g.neovide_transparency = 0.99
+    vim.g.neovide_refresh_rate = 144
 end
 
 -- Auto Command
 local victor_group = vim.api.nvim_create_augroup("victor", { clear = true })
 vim.api.nvim_create_autocmd("VimEnter", {
     group = victor_group,
-	callback = function()
-		vim.cmd("cd $DEV")
-	end,
+    callback = function()
+        vim.cmd("cd $DEV")
+    end,
 })
-
--- Leader
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
--- Keymaps
-vim.keymap.set("n", "<c-k>", "<c-w><c-k>", { noremap = true })
-vim.keymap.set("n", "<c-j>", "<c-w><c-j>", { noremap = true })
-vim.keymap.set("n", "<c-h>", "<c-w><c-h>", { noremap = true })
-vim.keymap.set("n", "<c-l>", "<c-w><c-l>", { noremap = true })
-
--- Window Management
--- keymap.set("n", "<leader>sv", ":vsplit<CR>", opts) -- Split Vertical
--- keymap.set("n", "<leader>sh", ":split<CR>", opts) -- Split Horizontal
--- keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>", opts) -- Toggle Minimize
 
 local opt = vim.opt
 -- Indentation

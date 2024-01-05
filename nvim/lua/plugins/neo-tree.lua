@@ -13,7 +13,7 @@ return {
 				},
 			},
 		})
-		vim.keymap.set("n", "<C-n>", ":Neotree filesystem toggle right<CR>", {})
+		vim.keymap.set("n", "<C-n>", ":Neotree filesystem toggle right<CR>", { silent = true })
 		vim.api.nvim_create_autocmd("VimEnter", {
 			callback = function()
 				vim.cmd("Neotree filesystem toggle right")
