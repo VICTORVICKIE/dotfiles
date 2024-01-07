@@ -27,9 +27,14 @@ return {
 		end,
 	},
 	-- Auto Pairs
-	{
+	--[[ {
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 		opts = {}, -- Equivalent to setup({}) function
-	},
+	}, ]]
+	{ "RaafatTurki/hex.nvim",
+        config = function ()
+           require("hex").setup({})
+        end
+    },
 }
