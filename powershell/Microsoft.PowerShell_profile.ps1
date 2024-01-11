@@ -18,7 +18,7 @@ function symlink ($target, $link) {
 function export { $env:Path += ';' + $args }
 $env:VIRTUAL_ENV_DISABLE_PROMPT = 1
 
-oh-my-posh prompt init pwsh --config C:\Users\SVick\Documents\Powershell\custom.json | Invoke-Expression
+oh-my-posh prompt init pwsh --config .\custom.json | Invoke-Expression
 
 
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
