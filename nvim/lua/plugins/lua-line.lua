@@ -3,6 +3,7 @@ return {
     config = function()
         local lualine = require("lualine")
         local rp = require("rose-pine.palette")
+        -- local hydra = require("hydra.statusline")
         local colors = {
             bg = rp.nc,
             fg = rp.text,
@@ -15,7 +16,7 @@ return {
             magenta = rp.rose,
             blue = rp.pine,
             red = rp.love,
-            none = rp.base
+            none = rp.base,
         }
 
         local function mode_color()
@@ -40,11 +41,32 @@ return {
                 rm = colors.cyan,
                 ["r?"] = colors.cyan,
                 ["!"] = colors.red,
-                t = colors.red
+                t = colors.red,
             }
             return {
-                fg = mode_colors[vim.fn.mode()]
+                fg = mode_colors[vim.fn.mode()],
             }
+        end
+
+        --[[ local function is_active()
+            local ok, hydra = pcall(require, "hydra.statusline")
+            return ok and hydra.is_active()
+        end
+
+        local function get_name()
+            local ok, hydra = pcall(require, "hydra.statusline")
+            if ok then
+                return hydra.get_name()
+            end
+            return ""
+        end ]]
+
+        local function current_mode()
+            local hydra = require("hydra.statusline")
+            if hydra.is_active() then
+                return hydra.get_name()
+            end
+            return require("lualine.utils.mode").get_mode()
         end
 
         local conditions = {
@@ -58,7 +80,7 @@ return {
                 local filepath = vim.fn.expand("%:p:h")
                 local gitdir = vim.fn.finddir(".git", filepath .. ";")
                 return gitdir and #gitdir > 0 and #gitdir < #filepath
-            end
+            end,
         }
 
         -- Config
@@ -75,16 +97,16 @@ return {
                     normal = {
                         c = {
                             fg = colors.fg,
-                            bg = colors.bg
-                        }
+                            bg = colors.bg,
+                        },
                     },
                     inactive = {
                         c = {
                             fg = colors.fg,
-                            bg = colors.bg
-                        }
-                    }
-                }
+                            bg = colors.bg,
+                        },
+                    },
+                },
             },
             sections = {
                 -- these are to remove the defaults
@@ -94,7 +116,7 @@ return {
                 lualine_z = {},
                 -- These will be filled later
                 lualine_c = {},
-                lualine_x = {}
+                lualine_x = {},
             },
             inactive_sections = {
                 -- these are to remove the defaults
@@ -103,8 +125,24 @@ return {
                 lualine_y = {},
                 lualine_z = {},
                 lualine_c = {},
-                lualine_x = {}
-            }
+                lualine_x = {},
+            },
+            winbar = {
+                lualine_a = { "diagnostics" },
+                lualine_b = {},
+                lualine_c = {},
+                lualine_x = { "filename" },
+                lualine_y = {},
+                lualine_z = {},
+            },
+            inactive_winbar = {
+                lualine_a = {},
+                lualine_b = {},
+                lualine_c = {},
+                lualine_x = {},
+                lualine_y = {},
+                lualine_z = {},
+            },
         }
 
         -- Inserts a component in lualine_c at left section
@@ -123,63 +161,64 @@ return {
             end,
             color = mode_color,
             padding = {
-                right = 1
-            } -- We don't need space before this
+                right = 1,
+            }, -- We don't need space before this
         })
 
         left({
             -- mode component
-            "mode",
+            current_mode,
             color = mode_color,
             padding = {
-                right = 1
-            }
+                right = 1,
+            },
         })
 
+        -- left({ get_name, cond = is_active })
         --[[ left({
             -- filesize component
             "filesize",
             cond = conditions.buffer_not_empty,
         }) ]]
 
-        left({
+        --[[ left({
             "filename",
             cond = conditions.buffer_not_empty,
             color = {
                 fg = colors.magenta,
-                gui = "bold"
-            }
-        })
+                gui = "bold",
+            },
+        }) ]]
 
-        left({"location"})
+        left({ "location" })
 
         left({
             "progress",
             color = {
                 fg = colors.fg,
-                gui = "bold"
-            }
+                gui = "bold",
+            },
         })
 
         left({
             "diagnostics",
-            sources = {"nvim_diagnostic"},
+            sources = { "nvim_diagnostic" },
             symbols = {
                 error = " ",
                 warn = " ",
-                info = " "
+                info = " ",
             },
             diagnostics_color = {
                 color_error = {
-                    fg = colors.red
+                    fg = colors.red,
                 },
                 color_warn = {
-                    fg = colors.yellow
+                    fg = colors.yellow,
                 },
                 color_info = {
-                    fg = colors.cyan
-                }
-            }
+                    fg = colors.cyan,
+                },
+            },
         })
 
         left({
@@ -188,15 +227,17 @@ return {
             end,
             color = mode_color,
             padding = {
-                left = 1
-            } -- We don't need space before this
+                left = 1,
+            }, -- We don't need space before this
         })
 
         -- Insert mid section. You can make any number of sections in neovim :)
         -- for lualine it's any number greater then 2
-        left({function()
-            return "%="
-        end})
+        left({
+            function()
+                return "%="
+            end,
+        })
 
         left({
             -- Lsp server name .
@@ -219,8 +260,8 @@ return {
             icon = " LSP:",
             color = {
                 fg = rp.text,
-                gui = "bold"
-            }
+                gui = "bold",
+            },
         })
 
         -- Add components to right sections
@@ -231,8 +272,8 @@ return {
             end,
             color = mode_color,
             padding = {
-                right = 1
-            }
+                right = 1,
+            },
         })
 
         right({
@@ -241,8 +282,8 @@ return {
             cond = conditions.hide_in_width,
             color = {
                 fg = colors.green,
-                gui = "bold"
-            }
+                gui = "bold",
+            },
         })
 
         right({
@@ -251,8 +292,8 @@ return {
             icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
             color = {
                 fg = colors.green,
-                gui = "bold"
-            }
+                gui = "bold",
+            },
         })
 
         right({
@@ -260,8 +301,8 @@ return {
             icon = "",
             color = {
                 fg = colors.violet,
-                gui = "bold"
-            }
+                gui = "bold",
+            },
         })
 
         right({
@@ -270,20 +311,20 @@ return {
             symbols = {
                 added = "[+] ",
                 modified = "[~] ",
-                removed = "[-] "
+                removed = "[-] ",
             },
             diff_color = {
                 added = {
-                    fg = colors.green
+                    fg = colors.green,
                 },
                 modified = {
-                    fg = colors.orange
+                    fg = colors.orange,
                 },
                 removed = {
-                    fg = colors.red
-                }
+                    fg = colors.red,
+                },
             },
-            cond = conditions.hide_in_width
+            cond = conditions.hide_in_width,
         })
 
         right({
@@ -292,10 +333,10 @@ return {
             end,
             color = mode_color,
             padding = {
-                left = 1
-            }
+                left = 1,
+            },
         })
 
         lualine.setup(config)
-    end
+    end,
 }

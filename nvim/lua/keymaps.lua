@@ -2,8 +2,11 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- vim.g.VM_default_mappings = 0
 local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
+
+keymap("c", "<C-S-v>", "<C-r>+", opts)
 -- Keymaps
 keymap("n", "<C-k>", "<c-w>k", opts)
 keymap("n", "<C-j>", "<c-w>j", opts)
@@ -23,7 +26,19 @@ keymap("v", "<S-Tab>", "<gv", opts) -- Right Indentation
 keymap("v", "<Tab>", ">gv", opts)   -- Left Indentation
 
 -- Window Management
--- keymap.set("n", "<leader>sv", ":vsplit<CR>", opts) -- Split Vertical
--- keymap.set("n", "<leader>sh", ":split<CR>", opts) -- Split Horizontal
--- keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>", opts) -- Toggle Minimize
+keymap("n", "<leader>sv", ":vsplit<CR>", opts) -- Split Vertical
+keymap("n", "<leader>sh", ":split<CR>", opts) -- Split Horizontal
+keymap("n", "<leader>sm", ":MaximizerToggle<CR>", opts) -- Toggle Minimize
 
+-- Primeagen Suggestion
+-- join lines with space without cursor jump
+keymap("n", "J", "mzJ`z")
+-- keeps cursor at middle of rows
+keymap("n", "<C-d>", "<C-d>zz")
+keymap("n", "<C-u>", "<C-u>zz")
+keymap("n", "n", "nzzzv")
+keymap("n", "N", "Nzzzv")
+keymap("x", "<leader>p", [["_dP]])
+keymap({ "n", "v" }, "<leader>d", [["_d]])
+keymap("i", "<C-c>", "<Esc>")
+keymap("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])

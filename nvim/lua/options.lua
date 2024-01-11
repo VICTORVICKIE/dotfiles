@@ -2,6 +2,8 @@
 if vim.g.neovide then
     vim.g.neovide_transparency = 0.99
     vim.g.neovide_refresh_rate = 144
+    vim.g.neovide_unlink_border_highlights = true
+    vim.g.neovide_scroll_animation_length = 0
 end
 
 -- Auto Command
@@ -34,9 +36,24 @@ opt.number = true
 opt.termguicolors = true
 -- opt.colorcolumn = '120'
 opt.signcolumn = "yes"
-opt.cmdheight = 1
+opt.cmdheight = 2
 opt.scrolloff = 10
 opt.completeopt = "menuone,noinsert,noselect"
+opt.fillchars = {
+    horiz = "═",
+
+    horizup = "╩",
+
+    horizdown = "╦",
+
+    vert = "║",
+
+    vertleft = "╣",
+
+    vertright = "╠",
+
+    verthoriz = "╬",
+}
 
 -- Behaviour
 opt.hidden = true
@@ -60,6 +77,6 @@ opt.shell = "pwsh"
 opt.shellcmdflag = "-NoLogo -ExecutionPolicy RemoteSigned -Command "
 opt.shellquote = ""
 opt.shellxquote = ""
-opt.shellpipe = "| Out-File -Encoding UTF8 %s"
+opt.shellpipe = "| Out-File -Encoding UTF8 %s>"
 opt.shellredir = "| Out-File -Encoding UTF8 %s"
 vim.api.nvim_create_user_command("WinTerm", "!wt -d $PWD", {})
