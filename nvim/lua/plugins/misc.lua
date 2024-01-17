@@ -1,37 +1,22 @@
 return {
-
 	{
-		"smoka7/multicursors.nvim",
-		event = "VeryLazy",
-		dependencies = {
-			"smoka7/hydra.nvim",
-		},
-		cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
-
-		keys = {
-			{
-				mode = { "v", "n" },
-				"<Leader>m",
-				"<cmd>MCstart<cr>",
-				desc = "Create a selection for selected text or word under the cursor",
-			},
-		},
-		config = function()
-			require("multicursors").setup({
-				hint_config = false,
-			})
-		end,
-	},
-	--[[ {
 		"mg979/vim-visual-multi",
 		branch = "master",
+		init = function()
+			vim.g.VM_default_mappings = 0
+			vim.g.VM_set_statusline = 0
+			vim.g.VM_silent_exit = 1
+			vim.g.VM_quit_after_leaving_insert_mode = 1
+			vim.g.VM_show_warnings = 0
+			-- vim.g.VM_highlight_matches = ""
+		end,
 		config = function()
 			vim.keymap.set("n", "<C-n>", "<Plug>(VM-Find-Under)")
 			vim.keymap.set("n", "<C-m>", "<Plug>(VM-Skip-Region)")
 			vim.keymap.set("n", "<C-Up>", "<Plug>(VM-Add-Cursor-Up)")
-			vim.keymap.set("n", "<C-Down>", "<Plug>(VM-Add-Cursor-Down)")
+            vim.keymap.set("n", "<C-Down>", "<Plug>(VM-Add-Cursor-Down)")
 		end,
-	}, ]]
+	},
 
 	-- Color Code Highlight #069420
 	{
@@ -60,12 +45,12 @@ return {
 			vim.api.nvim_set_keymap("i", "<C-/>", "<Esc>gcci", { noremap = false })
 		end,
 	},
-	-- Auto Pairs
-	--[[ {
-		"windwp/nvim-autopairs",
-		event = "InsertEnter",
-		opts = {}, -- Equivalent to setup({}) function
-	}, ]]
+	{
+		"Pocco81/auto-save.nvim",
+		config = function()
+			require("auto-save").setup({})
+		end,
+	},
 	{
 		"RaafatTurki/hex.nvim",
 		config = function()

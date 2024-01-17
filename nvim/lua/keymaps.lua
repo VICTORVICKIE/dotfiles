@@ -2,17 +2,19 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- vim.g.VM_default_mappings = 0
 local keymap = vim.keymap.set
 local opts = { noremap = true, silent = true }
 
-keymap("c", "<C-S-v>", "<C-r>+", opts)
+keymap("c", "<C-V>", "<C-r>*", { noremap = true })
 -- Keymaps
 keymap("n", "<C-k>", "<c-w>k", opts)
 keymap("n", "<C-j>", "<c-w>j", opts)
 keymap("n", "<C-h>", "<c-w>h", opts)
 keymap("n", "<C-l>", "<c-w>l", opts)
-
+keymap({"n", "v"}, "<Up>", "<Nop>")
+keymap({"n", "v"}, "<Down>", "<Nop>")
+keymap({"n", "v"}, "<Right>", "<Nop>")
+keymap({"n", "v"}, "<Left>", "<Nop>")
 -- move text up and down
 keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", opts)
 keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", opts)
@@ -26,8 +28,8 @@ keymap("v", "<S-Tab>", "<gv", opts) -- Right Indentation
 keymap("v", "<Tab>", ">gv", opts)   -- Left Indentation
 
 -- Window Management
-keymap("n", "<leader>sv", ":vsplit<CR>", opts) -- Split Vertical
-keymap("n", "<leader>sh", ":split<CR>", opts) -- Split Horizontal
+keymap("n", "<leader>sv", ":vsplit<CR>", opts)          -- Split Vertical
+keymap("n", "<leader>sh", ":split<CR>", opts)           -- Split Horizontal
 keymap("n", "<leader>sm", ":MaximizerToggle<CR>", opts) -- Toggle Minimize
 
 -- Primeagen Suggestion
