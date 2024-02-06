@@ -1,6 +1,6 @@
 -- Neovide
 if vim.g.neovide then
-    vim.g.neovide_transparency = 0.99
+    vim.g.neovide_transparency = 1.99
     vim.g.neovide_refresh_rate = 144
     vim.g.neovide_unlink_border_highlights = true
     vim.g.neovide_scroll_animation_length = 0
@@ -40,18 +40,13 @@ opt.cmdheight = 1
 opt.scrolloff = 10
 opt.completeopt = "menuone,noinsert,noselect"
 opt.fillchars = {
+    eob = " ",
     horiz = "═",
-
     horizup = "╩",
-
     horizdown = "╦",
-
     vert = "║",
-
     vertleft = "╣",
-
     vertright = "╠",
-
     verthoriz = "╬",
 }
 
@@ -79,4 +74,7 @@ opt.shellquote = ""
 opt.shellxquote = ""
 opt.shellpipe = "| Out-File -Encoding UTF8 %s>"
 opt.shellredir = "| Out-File -Encoding UTF8 %s"
-vim.api.nvim_create_user_command("WinTerm", "!wt -d $PWD", {})
+vim.api.nvim_create_user_command("WinTerm", function()
+    print(vim.fn.getcwd())
+    vim.fn.jobstart({ "cmd", "/c", "wt", "-d", vim.fn.getcwd() })
+end, {})

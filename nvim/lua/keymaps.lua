@@ -11,10 +11,10 @@ keymap("n", "<C-k>", "<c-w>k", opts)
 keymap("n", "<C-j>", "<c-w>j", opts)
 keymap("n", "<C-h>", "<c-w>h", opts)
 keymap("n", "<C-l>", "<c-w>l", opts)
-keymap({"n", "v"}, "<Up>", "<Nop>")
+--[[ keymap({"n", "v"}, "<Up>", "<Nop>")
 keymap({"n", "v"}, "<Down>", "<Nop>")
 keymap({"n", "v"}, "<Right>", "<Nop>")
-keymap({"n", "v"}, "<Left>", "<Nop>")
+keymap({"n", "v"}, "<Left>", "<Nop>") ]]
 -- move text up and down
 keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", opts)
 keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", opts)

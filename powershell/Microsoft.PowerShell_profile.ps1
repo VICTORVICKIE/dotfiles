@@ -15,6 +15,9 @@ function symlink ($target, $link) {
     New-Item -Path $link -ItemType SymbolicLink -Value $target
 }
 
+Remove-Alias -Name man 
+function man { wsl man $args }
+
 function export { $env:Path += ';' + $args }
 $env:VIRTUAL_ENV_DISABLE_PROMPT = 1
 
