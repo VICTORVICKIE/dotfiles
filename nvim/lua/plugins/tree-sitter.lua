@@ -18,7 +18,7 @@ return {
                 textobjects = {
                     select = {
                         enable = true,
-                        lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+                        lookahead = true,
                         keymaps = {
                             -- You can use the capture groups defined in textobjects.scm
                             ["aa"] = "@parameter.outer",
@@ -61,15 +61,15 @@ return {
                         --   ['[i'] = "@conditional.inner",
                         -- }
                     },
-                    swap = {
-                        enable = true,
-                        swap_next = {
-                            ["<leader>a"] = "@parameter.inner",
-                        },
-                        swap_previous = {
-                            ["<leader>A"] = "@parameter.inner",
-                        },
-                    },
+                    -- swap = {
+                    --     enable = true,
+                    --     swap_next = {
+                    --         ["<leader>a"] = "@parameter.inner",
+                    --     },
+                    --     swap_previous = {
+                    --         ["<leader>A"] = "@parameter.inner",
+                    --     },
+                    -- },
                 },
             })
         end,

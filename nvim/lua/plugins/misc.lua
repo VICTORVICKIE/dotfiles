@@ -1,4 +1,5 @@
 return {
+    { "szw/vim-maximizer" },
     { "ThePrimeagen/vim-be-good" },
 
     -- Color Code Highlight #069420
@@ -16,9 +17,6 @@ return {
     -- Auto Slash Comment
     {
         "numToStr/Comment.nvim",
-        opts = {
-            -- add any options here
-        },
         lazy = false,
         config = function()
             require("Comment").setup()
@@ -28,10 +26,14 @@ return {
             vim.api.nvim_set_keymap("i", "<C-/>", "<Esc>gcci", { noremap = false })
         end,
     },
+    -- NOTE: Nice
+    {
+        "folke/todo-comments.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        opts = { signs = false },
+    },
     {
         "RaafatTurki/hex.nvim",
-        config = function()
-            require("hex").setup({})
-        end,
+        opts = {},
     },
 }
