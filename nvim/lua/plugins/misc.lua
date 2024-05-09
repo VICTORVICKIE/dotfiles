@@ -1,10 +1,11 @@
 return {
-    { "szw/vim-maximizer" },
-    { "ThePrimeagen/vim-be-good" },
+    { "szw/vim-maximizer", cmd = "MaximizerToggle" },
+    { "ThePrimeagen/vim-be-good", cmd = "VimBeGood" },
 
     -- Color Code Highlight #069420
     {
         "uga-rosa/ccc.nvim",
+        event = "BufRead",
         config = function()
             require("ccc").setup({
                 highlighter = {
@@ -29,11 +30,20 @@ return {
     -- NOTE: Nice
     {
         "folke/todo-comments.nvim",
+        event = "VimEnter",
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = { signs = false },
     },
     {
         "RaafatTurki/hex.nvim",
+        event = "VeryLazy",
         opts = {},
+    },
+    {
+        "mbbill/undotree",
+
+        config = function()
+            vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+        end,
     },
 }

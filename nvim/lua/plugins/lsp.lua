@@ -1,10 +1,20 @@
 return { -- LSP Configuration & Plugins
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "mfussenegger/nvim-jdtls",
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
-        { "j-hui/fidget.nvim", opts = {} },
+        {
+            "j-hui/fidget.nvim",
+            opts = {
+                notification = {
+                    window = {
+                        border = "single", -- Border around the notification window
+                    },
+                },
+            },
+        },
     },
     config = function()
         local telescope_builtin = require("telescope.builtin")
@@ -41,6 +51,15 @@ return { -- LSP Configuration & Plugins
                     border = "rounded",
                 })
 
+                vim.diagnostic.config({
+                    float = { border = "rounded" },
+                })
+
+                map("[d", vim.diagnostic.goto_prev, "Go to previous [D]iagnostic message")
+                map("]d", vim.diagnostic.goto_next, "Go to next [D]iagnostic message")
+                map("<leader>de", vim.diagnostic.open_float, "Show diagnostic [E]rror messages")
+                map("<leader>dq", vim.diagnostic.setloclist, "Open diagnostic [Q]uickfix list")
+
                 local client = vim.lsp.get_client_by_id(event.data.client_id)
                 if client and client.server_capabilities.documentHighlightProvider then
                     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
@@ -61,9 +80,18 @@ return { -- LSP Configuration & Plugins
 
         local servers = {
             rust_analyzer = {},
-            jdtls = {},
+            jdtls = {
+                root_dir = vim.loop.cwd,
+            },
             tsserver = {},
-            pyright = {},
+            svelte = {},
+            pyright = {
+                -- settings = {
+                --     python = {
+                --         pythonPath = vim.fn.exepath("python"),
+                --     },
+                -- },
+            },
             html = {},
             gopls = {},
             lua_ls = {
@@ -73,11 +101,16 @@ return { -- LSP Configuration & Plugins
                 settings = {
                     Lua = {
                         runtime = { version = "LuaJIT" },
+                        diagnostics = { disable = { "missing-fields" } },
                         workspace = {
                             checkThirdParty = false,
+                            -- library = {
+                            --     "${3rd}/luv/library",
+                            --     unpack(vim.api.nvim_get_runtime_file("", true)),
+                            -- },
                             library = {
                                 "${3rd}/luv/library",
-                                unpack(vim.api.nvim_get_runtime_file("", true)),
+                                vim.env.VIMRUNTIME,
                             },
                         },
                     },

@@ -1,72 +1,70 @@
 return {
-	{
-		"ThePrimeagen/harpoon",
-		branch = "harpoon2",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			local harpoon = require("harpoon")
-			local conf = require("telescope.config").values
+    {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        event = "VimEnter",
+        config = function()
+            local harpoon = require("harpoon")
 
-			local function toggle_telescope(harpoon_files)
-				local file_paths = {}
-				for _, item in ipairs(harpoon_files.items) do
-					table.insert(file_paths, item.value)
-				end
-				require("telescope.pickers")
-					.new({}, {
-						prompt_title = "Harpoon",
-						finder = require("telescope.finders").new_table({
-							results = file_paths,
-						}),
-						previewer = conf.file_previewer({}),
-						sorter = conf.generic_sorter({}),
-					})
-					:find()
-			end
+            harpoon:setup()
 
-			harpoon:setup()
+            vim.keymap.set("n", "<A-h>", function()
+                harpoon.ui:toggle_quick_menu(harpoon:list())
+            end)
+            vim.keymap.set("n", "<A-a>", function()
+                harpoon:list():append()
+            end)
+            vim.keymap.set("n", "<A-1>", function()
+                harpoon:list():select(1)
+            end)
+            vim.keymap.set("n", "<A-2>", function()
+                harpoon:list():select(2)
+            end)
+            vim.keymap.set("n", "<A-3>", function()
+                harpoon:list():select(3)
+            end)
+            vim.keymap.set("n", "<A-4>", function()
+                harpoon:list():select(4)
+            end)
+        end,
+    },
+    -- Telescope
+    {
+        "nvim-telescope/telescope.nvim",
+        tag = "0.1.5",
+        event = "VimEnter",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = "make",
+                cond = function()
+                    return vim.fn.executable("make") == 1
+                end,
+            },
+            -- Telescope UI Select
+            { "nvim-telescope/telescope-ui-select.nvim" },
+        },
+        config = function()
+            require("telescope").setup({
+                extensions = {
+                    ["ui-select"] = { require("telescope.themes").get_dropdown({}) },
+                },
+            })
 
-			vim.keymap.set("n", "<leader>th", function()
-				toggle_telescope(harpoon:list())
-			end, { desc = "harpoon" })
-			vim.keymap.set("n", "<A-h>", function()
-				harpoon.ui:toggle_quick_menu(harpoon:list())
-			end)
-			vim.keymap.set("n", "<A-a>", function()
-				harpoon:list():append()
-			end)
-			vim.keymap.set("n", "<A-1>", function()
-				harpoon:list():select(1)
-			end)
-			vim.keymap.set("n", "<A-2>", function()
-				harpoon:list():select(2)
-			end)
-			vim.keymap.set("n", "<A-3>", function()
-				harpoon:list():select(3)
-			end)
-			vim.keymap.set("n", "<A-4>", function()
-				harpoon:list():select(4)
-			end)
-		end,
-	},
-	-- Telescope UI Select
-	{ "nvim-telescope/telescope-ui-select.nvim" },
-	-- Telescope
-	{
-		"nvim-telescope/telescope.nvim",
-		tag = "0.1.5",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			require("telescope").setup({
-				extensions = {
-					["ui-select"] = { require("telescope.themes").get_dropdown({}) },
-				},
-			})
+            -- Enable telescope extensions, if they are installed
+            pcall(require("telescope").load_extension, "fzf")
+            pcall(require("telescope").load_extension, "ui-select")
 
-			require("telescope").load_extension("ui-select")
-			local builtin = require("telescope.builtin")
-			vim.keymap.set("n", "<Leader>tf", builtin.find_files, { desc = "file" })
-			vim.keymap.set("n", "<Leader>tg", builtin.live_grep, { desc = "grep" })
-		end,
-	},
+            local builtin = require("telescope.builtin")
+            vim.keymap.set("n", "<Leader>tb", builtin.builtin, { desc = "builtin" })
+            vim.keymap.set("n", "<Leader>td", builtin.diagnostics, { desc = "diagnostics" })
+            vim.keymap.set("n", "<Leader>tf", builtin.find_files, { desc = "file" })
+            vim.keymap.set("n", "<Leader>tg", builtin.live_grep, { desc = "grep" })
+            vim.keymap.set("n", "<Leader>th", builtin.help_tags, { desc = "help" })
+            vim.keymap.set("n", "<Leader>tk", builtin.keymaps, { desc = "keymaps" })
+            vim.keymap.set("n", "<Leader>tw", builtin.grep_string, { desc = "grep_string" })
+        end,
+    },
 }

@@ -46,7 +46,7 @@ return {
         vim.keymap.set("n", "<leader>lf", function()
             vim.lsp.buf.format({
                 filter = function(client)
-                    return client.name == "null-ls"
+                    return client.name == "null-ls" or client.name == "svelte"
                 end,
             })
             vim.cmd("retab")

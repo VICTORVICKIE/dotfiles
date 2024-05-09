@@ -61,7 +61,3 @@ if vim.g.neovide then
     keymap("n", "<C-BS>", ":lua vim.g.neovide_scale_factor = 1.0<CR>")
 end
 
-keymap("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
-keymap("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
-keymap("n", "<leader>de", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
-keymap("n", "<leader>dq", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })

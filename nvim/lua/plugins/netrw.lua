@@ -1,8 +1,6 @@
 return {
     "prichrd/netrw.nvim",
     config = function()
-        vim.g.netrw_keepdir = 0
-        vim.g.netrw_liststyle = 3
         require("netrw").setup({
             icons = {
                 symlink = "", -- Symlink icon (directory and file)

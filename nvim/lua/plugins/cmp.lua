@@ -5,7 +5,7 @@ return { -- Autocompletion
         {
             "L3MON4D3/LuaSnip",
             build = (function()
-                if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+                if vim.fn.executable("make") == 0 then
                     return
                 end
                 return "make install_jsregexp"
@@ -44,10 +44,16 @@ return { -- Autocompletion
                     cmp.close()
                     fallback()
                 end, { "i" }),
-                ["<C-n>"] = cmp.mapping.select_next_item(),
-                ["<C-p>"] = cmp.mapping.select_prev_item(),
+
+                ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+                ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+
+                ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+                ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+
                 ["<C-y>"] = cmp.mapping.confirm({ select = true }),
                 ["<C-Space>"] = cmp.mapping.complete({}),
+
                 ["<C-l>"] = cmp.mapping(function()
                     if luasnip.expand_or_locally_jumpable() then
                         luasnip.expand_or_jump()
