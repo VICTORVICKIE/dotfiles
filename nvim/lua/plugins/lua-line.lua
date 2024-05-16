@@ -91,7 +91,7 @@ return {
                 return client.name == "null-ls"
             end),
             is_wsl = function()
-                return vim.fn.has("wsl")
+                return vim.fn.has("wsl") == 1
             end,
         }
 
@@ -200,9 +200,9 @@ return {
             function()
                 return "WSL"
             end,
+            cond = conditions.is_wsl,
             color = {
                 fg = colors.fg,
-                cond = conditions.is_wsl,
             },
         })
 

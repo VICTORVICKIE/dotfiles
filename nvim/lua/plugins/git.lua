@@ -2,16 +2,22 @@ return {
     {
         "NeogitOrg/neogit",
         dependencies = {
-            "nvim-lua/plenary.nvim", -- required
-            "sindrets/diffview.nvim", -- optional - Diff integration
+            "nvim-lua/plenary.nvim",
+            "sindrets/diffview.nvim",
             "nvim-telescope/telescope.nvim",
         },
         config = function()
             local neogit = require("neogit")
-            neogit.setup({})
-            vim.keymap.set("n", "<leader>g", function()
-                neogit.open({ kind = "floating" })
-            end)
+            neogit.setup({
+                kind = "floating",
+                popup = {
+                    kind = "floating",
+                },
+                -- commit_popup = {
+                --     kind = "floating",
+                -- },
+            })
+            vim.keymap.set("n", "<leader>g", neogit.open)
         end,
     },
     -- {
