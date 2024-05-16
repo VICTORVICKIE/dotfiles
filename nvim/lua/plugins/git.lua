@@ -13,9 +13,35 @@ return {
                 popup = {
                     kind = "floating",
                 },
-                -- commit_popup = {
-                --     kind = "floating",
-                -- },
+                commit_editor = {
+                    kind = "floating",
+                },
+                commit_select_view = {
+                    kind = "floating",
+                },
+                commit_view = {
+                    kind = "floating",
+                    verify_commit = vim.fn.executable("gpg") == 1, -- Can be set to true or false, otherwise we try to find the binary
+                },
+                log_view = {
+                    kind = "floating",
+                },
+                rebase_editor = {
+                    kind = "floating",
+                },
+                reflog_view = {
+                    kind = "floating",
+                },
+                merge_editor = {
+                    kind = "floating",
+                },
+                tag_editor = {
+                    kind = "floating",
+                },
+                preview_buffer = {
+                    kind = "floating",
+                },
+
             })
             vim.keymap.set("n", "<leader>g", neogit.open)
         end,
