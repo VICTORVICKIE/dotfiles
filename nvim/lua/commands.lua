@@ -28,8 +28,17 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_user_command("WinTerm", function()
     if vim.fn.has("win32") == 1 then
         vim.fn.jobstart({ "cmd.exe", "/c", "wt", "-w", "0", "nt", "-d", vim.fn.getcwd() })
-    elseif os.getenv("WSL_DISTRO_NAME") then
+    elseif vim.fn.has("wsl") == 1 then
         vim.fn.jobstart({ "cmd.exe", "/c", "wt", "-w", "0", "nt", "-d", vim.fn.getcwd(), "wsl" })
+    end
+end, {})
+
+vim.api.nvim_create_user_command("NeovideWSL", function()
+    if vim.fn.has("win32") == 1 and vim.fn.executable("neovide") and vim.fn.executable("wsl") then
+        local job_id = vim.fn.jobstart({ "neovide", "--wsl" }, { detach = true })
+        if job_id > 0 then
+            vim.cmd("wqall")
+        end
     end
 end, {})
 

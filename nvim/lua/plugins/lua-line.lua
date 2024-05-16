@@ -90,6 +90,9 @@ return {
             is_fmt_attached = is_attached(function(client)
                 return client.name == "null-ls"
             end),
+            is_wsl = function()
+                return vim.fn.has("wsl")
+            end,
         }
 
         -- Config
@@ -192,6 +195,16 @@ return {
         })
 
         left({ "location" })
+
+        left({
+            function()
+                return "WSL"
+            end,
+            color = {
+                fg = colors.fg,
+                cond = conditions.is_wsl,
+            },
+        })
 
         left({
             "progress",
