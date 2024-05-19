@@ -11,7 +11,7 @@ end
 -- Keymaps
 
 -- Terminal
-keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+keymap("t", "<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode")
 
 -- disable arrow keys
 -- keymap({"n", "v"}, "<Up>", "<Nop>")

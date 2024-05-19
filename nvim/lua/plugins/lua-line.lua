@@ -358,6 +358,12 @@ return {
         })
 
         right({
+            function()
+                return string.upper(vim.fn.fnamemodify(vim.fn.getcwd(), ":t"))
+            end,
+        })
+
+        right({
             "o:encoding", -- option component same as &encoding in viml
             fmt = string.upper, -- I'm not sure why it's upper case either ;)
             cond = conditions.hide_in_width,

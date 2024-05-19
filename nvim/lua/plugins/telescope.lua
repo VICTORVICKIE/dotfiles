@@ -61,10 +61,11 @@ return {
             vim.keymap.set("n", "<Leader>tb", builtin.builtin, { desc = "builtin" })
             vim.keymap.set("n", "<Leader>td", builtin.diagnostics, { desc = "diagnostics" })
             vim.keymap.set("n", "<Leader>tf", builtin.find_files, { desc = "file" })
-            vim.keymap.set("n", "<Leader>tg", builtin.live_grep, { desc = "grep" })
+            vim.keymap.set("n", "<Leader>tl", builtin.live_grep, { desc = "live grep" })
             vim.keymap.set("n", "<Leader>th", builtin.help_tags, { desc = "help" })
             vim.keymap.set("n", "<Leader>tk", builtin.keymaps, { desc = "keymaps" })
-            vim.keymap.set("n", "<Leader>tw", builtin.grep_string, { desc = "grep_string" })
+            vim.keymap.set("n", "<Leader>tg", builtin.grep_string, { desc = "grep string" })
+            vim.keymap.set("n", "<Leader>tp", builtin.filetypes, { desc = "pick filetype" })
         end,
     },
 }

@@ -1,119 +1,129 @@
 {
-  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
-  "blocks": [
-    {
-
-      // Left side of the Terminal
-      "alignment": "left",
-      // "newline": true,
-
-      "segments": [
-        {
-          "foreground": "#ffbebc",
-          "leading_diamond": "<#ff70a6> \ue200 </>",
-          "properties": {
-            "folder_icon": "\uf07b",
-            "folder_separator_icon": "\uf9e0",
-            "home_icon": "home",
-            "style": "agnoster_full"
-          },
-          "style": "diamond",
-          "template": " \ue5ff {{ .Path }} ",
-          "trailing_diamond": "<#ff70a6> \ue285 </>",
-          "type": "path"
-        },
-          {
-          "foreground": "#ee79d1",
-          "properties": {
-            "branch_icon": "\ue725 ",
-            "fetch_stash_count": true,
-            "fetch_status": true,
-            "fetch_upstream_icon": true,
-            "fetch_worktree_count": true
-          },
-          "style": "diamond",
-          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uf692 {{ .StashCount }}{{ end }} ",
-          "type": "git"
-        },
-       {
-          "foreground": "#ffffff",
-          "style": "plain",
-          "template": "\ue235 {{ .Full }}",
-          "type": "python"
-        }
-
-      ],
-      "type": "prompt"
+    "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+    "palette": {
+        "name": "Tokyo Night",
+        "background": "#1A1B26",
+        "black": "#414868",
+        "blue": "#7AA2F7",
+        "cyan": "#7DCFFF",
+        "foreground": "#A9B1DC",
+        "green": "#73DACA",
+        "purple": "#BB9AF7",
+        "red": "#F7768E",
+        "red1": "#db4b4b",
+        "selectionBackground": "#292E42",
+        "white": "#C0CAF5",
+        "yellow": "#E0AF68"
     },
-    {
-      "alignment": "right",
-      "segments": [
+    "blocks": [
         {
-          "foreground": "#a9ffb4",
-          "style": "plain",
-          "type": "text"
+            // Left side of the Terminal
+            "alignment": "left",
+            // "newline": true,
+
+            "segments": [
+                {
+                    "foreground": "p:blue",
+                    "leading_diamond": "<p:red> \ue200 </>",
+                    "properties": {
+                        "folder_icon": "\uf07b",
+                        "folder_separator_icon": "\uf9e0",
+                        "home_icon": "home",
+                        "style": "agnoster_full"
+                    },
+                    "style": "diamond",
+                    "template": " \ue5ff {{ .Path }} ",
+                    "trailing_diamond": "<p:red> \ue285 </>",
+                    "type": "path"
+                },
+                {
+                    "foreground": "p:purple",
+                    "properties": {
+                        "branch_icon": "\ue725 ",
+                        "fetch_stash_count": true,
+                        "fetch_status": true,
+                        "fetch_upstream_icon": true,
+                        "fetch_worktree_count": true
+                    },
+                    "style": "diamond",
+                    "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uf692 {{ .StashCount }}{{ end }} ",
+                    "type": "git"
+                },
+                {
+                    "foreground": "p:white",
+                    "style": "plain",
+                    "template": "\ue235 {{ .Full }}",
+                    "type": "python"
+                }
+            ],
+            "type": "prompt"
         },
         {
-          "foreground": "#a9ffb4",
-          "properties": {
-            "style": "dallas",
-            "threshold": 0
-          },
-          "style": "diamond",
-          "template": "<#ffffff>\uf252</> {{ .FormattedMs }}s <#ffffff>\ue601</>",
-          "type": "executiontime"
+            "alignment": "right",
+            "segments": [
+                {
+                    "foreground": "p:green",
+                    "style": "plain",
+                    "type": "text"
+                },
+                {
+                    "foreground": "p:green",
+                    "properties": {
+                        "style": "dallas",
+                        "threshold": 0
+                    },
+                    "style": "diamond",
+                    "template": "<p:white>\uf252</> {{ .FormattedMs }}s <p:white>\ue601</>",
+                    "type": "executiontime"
+                },
+                {
+                    "properties": {
+                        "root_icon": "\uf292 "
+                    },
+                    "style": "diamond",
+                    "template": " \uf0e7 ",
+                    "type": "root"
+                },
+                {
+                    "foreground": "p:green",
+                    "style": "diamond",
+                    "template": " <p:white>CPU:</> {{ round .PhysicalPercentUsed .Precision }}% ",
+                    "type": "sysinfo"
+                },
+                {
+                    "foreground": "p:green",
+                    "style": "diamond",
+                    "template": "<p:white>\u28ff</> <p:white>RAM:</> {{ (div ((sub .PhysicalTotalMemory .PhysicalFreeMemory)|float64) 1000000000.0) }}/{{ (div .PhysicalTotalMemory 1000000000.0) }}GB ",
+                    "type": "sysinfo"
+                }
+            ],
+            "type": "prompt"
         },
+
         {
-          "properties": {
-            "root_icon": "\uf292 "
-          },
-          "style": "diamond",
-          "template": " \uf0e7 ",
-          "type": "root"
-        },
-        {
-          "foreground": "#94ffa2",
-          "style": "diamond",
-          "template": " <#ffffff>CPU:</> {{ round .PhysicalPercentUsed .Precision }}% ",
-          "type": "sysinfo"
-        },
-        {
-          "foreground": "#81ff91",
-          "style": "diamond",
-          "template": "<#ffffff>\u28ff</> <#ffffff>RAM:</> {{ (div ((sub .PhysicalTotalMemory .PhysicalFreeMemory)|float64) 1000000000.0) }}/{{ (div .PhysicalTotalMemory 1000000000.0) }}GB ",
-          "type": "sysinfo"
+            "alignment": "left",
+            "newline": true,
+            "segments": [
+                {
+                    "foreground": "p:green",
+                    "foreground_templates": ["{{ if gt .Code 0 }}p:red1{{ end }}"],
+                    "properties": {
+                        "always_enabled": true
+                    },
+                    "style": "plain",
+                    "template": " \ue285 ",
+                    "type": "exit"
+                }
+            ],
+            "type": "prompt"
         }
-      ],
-      "type": "prompt"
+    ],
+    "console_title_template": "{{ .Folder }}",
+    "osc99": true,
+    "transient_prompt": {
+        "background": "transparent",
+        "foreground": "p:white",
+        "template": "\ue285 "
     },
-
-    {
-      "alignment": "left",
-      "newline": true,
-      "segments": [
-
-        {
-          "foreground": "#A9FFB4",
-          "foreground_templates": [
-            "{{ if gt .Code 0 }}#ef5350{{ end }}"
-          ],
-          "properties": {
-            "always_enabled": true
-          },
-          "style": "plain",
-          "template": " \ue285 ",
-          "type": "exit"
-        }
-      ],
-      "type": "prompt"
-    }
-  ],
-  "console_title_template": "{{ .Folder }}",
-  "osc99": true,
-  "transient_prompt": {
-    "background": "transparent",
-    "foreground": "#FEF5ED",
-    "template": "\ue285 "
-  },
-  "version": 2
+    "version": 2
 }

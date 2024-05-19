@@ -25,22 +25,61 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
-vim.api.nvim_create_user_command("WinTerm", function()
-    if vim.fn.has("win32") == 1 then
-        vim.fn.jobstart({ "cmd.exe", "/c", "wt", "-w", "0", "nt", "-d", vim.fn.getcwd() })
-    elseif vim.fn.has("wsl") == 1 then
-        vim.fn.jobstart({ "cmd.exe", "/c", "wt", "-w", "0", "nt", "-d", vim.fn.getcwd(), "wsl" })
+vim.api.nvim_create_user_command("RunWT", function(opts)
+    if vim.fn.executable("wt.exe") == 0 then
+        vim.api.nvim_echo({ { "Windows Terminal is not installed.", "ErrorMsg" } }, true, {})
+        return
     end
-end, {})
 
-vim.api.nvim_create_user_command("NeovideWSL", function()
-    if vim.fn.has("win32") == 1 and vim.fn.executable("neovide") and vim.fn.executable("wsl") then
-        local job_id = vim.fn.jobstart({ "neovide", "--wsl" }, { detach = true })
-        if job_id > 0 then
-            vim.cmd("wqall")
-        end
+    local job_id = 0
+    if vim.fn.has("win32") and string.find(opts.args, "wsl") and vim.fn.executable("wsl.exe") then
+        job_id = vim.fn.jobstart({ "wt.exe", "-w", "0", "nt", "-p", "Ubuntu", "-d", vim.fn.getcwd(), "wsl" })
+    elseif vim.fn.has("wsl") and string.find(opts.args, "wsl") then
+        job_id = vim.fn.jobstart({ "wt.exe", "-w", "0", "nt", "-p", "Ubuntu", "-d", vim.fn.getcwd(), "wsl" })
+    else
+        job_id = vim.fn.jobstart({ "wt.exe", "-w", "0", "nt", "-d", vim.fn.getcwd() })
     end
-end, {})
+
+    if job_id <= 0 then
+        vim.api.nvim_echo({ { "Unable to launch Windows Terminal.", "ErrorMsg" } }, true, {})
+        return
+    end
+end, {
+    nargs = "?",
+    complete = function()
+        return { "wsl" }
+    end,
+})
+
+vim.api.nvim_create_user_command("RunNeovide", function(opts)
+    if vim.fn.executable("neovide") == 0 and vim.fn.executable("neovide.exe") == 0 then
+        vim.api.nvim_echo({ { "Neovide is not installed.", "ErrorMsg" } }, true, {})
+        return
+    end
+
+    local job_id = 0
+    if vim.fn.has("win32") and string.find(opts.args, "wsl") and vim.fn.executable("wsl.exe") then
+        job_id = vim.fn.jobstart({ "neovide.exe", "--wsl" }, { detach = true })
+    elseif vim.fn.has("wsl") and vim.fn.executable("neovide") == 0 then
+        job_id = vim.fn.jobstart({ "neovide.exe" }, { detach = true })
+    else
+        job_id = vim.fn.jobstart({ "neovide" }, { detach = true })
+    end
+
+    if job_id <= 0 then
+        vim.api.nvim_echo({ { "Unable to launch Neovide.", "ErrorMsg" } }, true, {})
+        return
+    end
+
+    if string.find(opts.args, "relaunch") then
+        vim.cmd("wqall")
+    end
+end, {
+    nargs = "*",
+    complete = function()
+        return { "wsl", "relaunch" }
+    end,
+})
 
 vim.api.nvim_create_user_command("DelHidBufs", function()
     local bufinfos = vim.fn.getbufinfo({ buflisted = true })
