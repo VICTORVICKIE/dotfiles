@@ -20,7 +20,12 @@ return {
                     "preserve",
                 },
             },
-            black = {},
+            black = {
+                extra_args = {
+                    "--line-length",
+                    "79",
+                },
+            },
             isort = {},
             clang_format = { extra_args = { "-style={BasedOnStyle: LLVM, IndentWidth: 4}" } },
         }

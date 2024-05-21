@@ -14,7 +14,6 @@ vim.api.nvim_create_autocmd("VimLeavePre", {
     callback = function()
         vim.cmd("DelHidBufs")
         vim.cmd("SessionSave")
-        vim.cmd("LspStop")
     end,
 })
 
@@ -90,5 +89,5 @@ vim.api.nvim_create_user_command("DelHidBufs", function()
             hidden = hidden + 1
         end
     end, bufinfos)
-    print(("Deleted %d Hidden Buffers"):format(hidden))
+    -- print(("Deleted %d Hidden Buffers"):format(hidden))
 end, { desc = "Wipeout all buffers not shown in a window" })

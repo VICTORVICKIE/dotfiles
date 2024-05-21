@@ -38,16 +38,6 @@ return {
                     vim.cmd("%bd!")
                 end,
             })
-            vim.api.nvim_create_autocmd({ "User" }, {
-                pattern = "PersistedTelescopeLoadPost",
-                group = group,
-                callback = function(session)
-                    vim.schedule(function()
-                        vim.cmd("cd " .. session.data.dir_path)
-                        print("Loaded session: " .. session.data.name)
-                    end)
-                end,
-            })
         end,
     },
     {

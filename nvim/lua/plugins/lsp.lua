@@ -19,10 +19,15 @@ return { -- LSP Configuration & Plugins
     config = function()
         local telescope_builtin = require("telescope.builtin")
         vim.api.nvim_create_autocmd("LspAttach", {
-            group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
+            group = vim.api.nvim_create_augroup("lsp-attach", {
+                clear = true,
+            }),
             callback = function(event)
                 local map = function(keys, func, desc)
-                    vim.keymap.set("n", keys, func, { buffer = event.buf, desc = desc })
+                    vim.keymap.set("n", keys, func, {
+                        buffer = event.buf,
+                        desc = desc,
+                    })
                 end
 
                 map("<leader>ld", telescope_builtin.lsp_definitions, "goto definition")
@@ -40,7 +45,11 @@ return { -- LSP Configuration & Plugins
                 map("<leader>lw", telescope_builtin.lsp_dynamic_workspace_symbols, "symbols workspace")
 
                 map("<leader>la", function()
-                    vim.lsp.buf.code_action({ context = { only = { "quickfix", "refactor", "source" } } })
+                    vim.lsp.buf.code_action({
+                        context = {
+                            only = { "quickfix", "refactor", "source" },
+                        },
+                    })
                 end, "Code Action")
 
                 map("<leader>lt", telescope_builtin.lsp_type_definitions, "type definition")
@@ -52,7 +61,9 @@ return { -- LSP Configuration & Plugins
                 })
 
                 vim.diagnostic.config({
-                    float = { border = "rounded" },
+                    float = {
+                        border = "rounded",
+                    },
                 })
 
                 map("[d", vim.diagnostic.goto_prev, "Go to previous [D]iagnostic message")
@@ -78,19 +89,28 @@ return { -- LSP Configuration & Plugins
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
+        local function python_path()
+            local default_exepath = vim.fn.exepath("python3") or vim.fn.exepath("python")
+
+            if vim.fn.isdirectory("venv") then
+                local exepath = vim.fs.find({ "python", "python.exe" }, { path = "venv" })[1]
+                return exepath or default_exepath
+            end
+
+            return default_exepath
+        end
+
         local servers = {
             rust_analyzer = {},
-            jdtls = {
-                root_dir = vim.loop.cwd,
-            },
+            jdtls = {},
             tsserver = {},
             svelte = {},
             pyright = {
-                -- settings = {
-                --     python = {
-                --         pythonPath = vim.fn.exepath("python"),
-                --     },
-                -- },
+                settings = {
+                    python = {
+                        pythonPath = python_path(),
+                    },
+                },
             },
             html = {},
             gopls = {},
@@ -100,18 +120,19 @@ return { -- LSP Configuration & Plugins
                 -- capabilities = {},
                 settings = {
                     Lua = {
-                        runtime = { version = "LuaJIT" },
-                        diagnostics = { disable = { "missing-fields" } },
+                        runtime = {
+                            version = "LuaJIT",
+                        },
+                        diagnostics = {
+                            disable = { "missing-fields" },
+                        },
                         workspace = {
                             checkThirdParty = false,
                             -- library = {
                             --     "${3rd}/luv/library",
                             --     unpack(vim.api.nvim_get_runtime_file("", true)),
                             -- },
-                            library = {
-                                "${3rd}/luv/library",
-                                vim.env.VIMRUNTIME,
-                            },
+                            library = { "${3rd}/luv/library", vim.env.VIMRUNTIME },
                         },
                     },
                 },
@@ -132,6 +153,7 @@ return { -- LSP Configuration & Plugins
                         cmd = server.cmd,
                         settings = server.settings,
                         filetypes = server.filetypes,
+                        root_dir = vim.loop.cwd,
                         capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {}),
                     })
                 end,
