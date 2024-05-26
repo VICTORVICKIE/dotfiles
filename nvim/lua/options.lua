@@ -59,7 +59,7 @@ opt.autochdir = false
 opt.iskeyword:append("-")
 opt.mouse:append("a")
 opt.mousemoveevent = true
-opt.clipboard:append("unnamedplus")
+-- opt.clipboard:append("unnamedplus")
 opt.modifiable = true
 opt.encoding = "UTF-8"
 opt.updatetime = 250

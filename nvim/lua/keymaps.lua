@@ -45,12 +45,17 @@ keymap("n", "<C-l>", "<c-w>l")
 -- join lines with space without cursor jump
 keymap("n", "J", "mzJ`z")
 -- keeps cursor at middle of rows
-keymap("n", "<C-d>", "<C-d>zz")
+keymap("n", "<C-b>", "<C-d>zz")
 keymap("n", "<C-u>", "<C-u>zz")
 keymap("n", "n", "nzzzv")
 keymap("n", "N", "Nzzzv")
-keymap("x", "P", [["_dP]])
-keymap({ "n", "v" }, "D", [["_d]])
+
+keymap("x", "<leader>p", '"_dP')
+vim.keymap.set({"n", "v"}, "<leader>p", '"+p', {remap = true})
+vim.keymap.set({"n", "v"}, "<leader>P", '"+P', {remap = true})
+vim.keymap.set({"n", "v"}, "<leader>y", '"+y', {remap = true})
+vim.keymap.set({"n", "v"}, "<leader>Y", '"+Y', {remap = true})
+keymap({ "n", "v" }, "<leader>d", '"_d')
 keymap("i", "<C-c>", "<Esc>")
 
 -- Neovide

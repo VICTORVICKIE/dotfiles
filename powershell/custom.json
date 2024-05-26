@@ -27,12 +27,12 @@
                     "leading_diamond": "<p:red> \ue200 </>",
                     "properties": {
                         "folder_icon": "\uf07b",
-                        "folder_separator_icon": "\uf9e0",
+                        "folder_separator_icon": " \uf9e0",
                         "home_icon": "home",
                         "style": "agnoster_full"
                     },
                     "style": "diamond",
-                    "template": " \ue5ff {{ .Path }} ",
+                    "template": "{{ url ((cat (title .OS) \"\uf9e0\" .Path) | replace \"\uf9e0 \" \"\uf9e0\") .Location }}",
                     "trailing_diamond": "<p:red> \ue285 </>",
                     "type": "path"
                 },
@@ -46,7 +46,7 @@
                         "fetch_worktree_count": true
                     },
                     "style": "diamond",
-                    "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{ .BranchStatus }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \uf692 {{ .StashCount }}{{ end }} ",
+                    "template": " {{ url .HEAD .UpstreamURL }} ",
                     "type": "git"
                 },
                 {
@@ -93,7 +93,7 @@
                 {
                     "foreground": "p:green",
                     "style": "diamond",
-                    "template": "<p:white>\u28ff</> <p:white>RAM:</> {{ (div ((sub .PhysicalTotalMemory .PhysicalFreeMemory)|float64) 1000000000.0) }}/{{ (div .PhysicalTotalMemory 1000000000.0) }}GB ",
+                    "template": "<p:white>\u28ff</> <p:white>RAM:</> {{ round .PhysicalPercentUsed .Precision }}%",
                     "type": "sysinfo"
                 }
             ],
