@@ -60,11 +60,9 @@ return {
 
         local function is_attached(predicate)
             return function()
-                local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-                local clients = vim.lsp.get_active_clients()
+                local clients = vim.lsp.get_clients({ bufnr = 0 })
                 for _, client in ipairs(clients) do
-                    local filetypes = client.config.filetypes
-                    if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 and predicate(client) then
+                    if predicate(client) then
                         return true
                     end
                 end
@@ -83,15 +81,6 @@ return {
                 local filepath = vim.fn.expand("%:p:h")
                 local gitdir = vim.fn.finddir(".git", filepath .. ";")
                 return gitdir and #gitdir > 0 and #gitdir < #filepath
-            end,
-            is_lsp_attached = is_attached(function(client)
-                return client.name ~= "null-ls"
-            end),
-            is_fmt_attached = is_attached(function(client)
-                return client.name == "null-ls"
-            end),
-            is_wsl = function()
-                return vim.fn.has("wsl") == 1
             end,
         }
 
@@ -200,7 +189,9 @@ return {
             function()
                 return "WSL"
             end,
-            cond = conditions.is_wsl,
+            cond = function()
+                return vim.fn.has("wsl") == 1
+            end,
             color = {
                 fg = colors.fg,
             },
@@ -268,7 +259,9 @@ return {
                 return "No Active LSP / FMT"
             end,
             cond = function()
-                return not conditions.is_lsp_attached() and not conditions.is_fmt_attached()
+                local is_lsp_attached = #vim.lsp.get_clients({ bufnr = 0 }) > 0
+                local is_fmt_attached = #require("conform").list_formatters_for_buffer(0) > 0
+                return not is_lsp_attached and not is_fmt_attached
             end,
             color = { fg = colors.text },
         })
@@ -277,24 +270,25 @@ return {
             function()
                 return "LSP:"
             end,
-            cond = conditions.is_lsp_attached,
+            cond = function()
+                return #vim.lsp.get_clients({ bufnr = 0 }) > 0
+            end,
             color = { fg = colors.yellow },
         })
 
         left({
             function()
-                local clients = vim.lsp.buf_get_clients()
-                local lsps = vim.tbl_filter(function(client)
-                    return client.name ~= "null-ls"
-                end, clients)
+                local clients = vim.lsp.get_clients({ bufnr = 0 })
 
                 local lsp_names = vim.tbl_map(function(client)
                     return client.name
-                end, lsps)
+                end, clients)
 
                 return table.concat(lsp_names, ", ")
             end,
-            cond = conditions.is_lsp_attached,
+            cond = function()
+                return #vim.lsp.get_clients({ bufnr = 0 }) > 0
+            end,
             color = { fg = colors.text },
             padding = 0,
         })
@@ -304,7 +298,9 @@ return {
                 return "&"
             end,
             cond = function()
-                return conditions.is_lsp_attached() and conditions.is_fmt_attached()
+                local is_lsp_attached = #vim.lsp.get_clients({ bufnr = 0 }) > 0
+                local is_fmt_attached = #require("conform").list_formatters_for_buffer(0) > 0
+                return is_lsp_attached and is_fmt_attached
             end,
             color = mode_color,
         })
@@ -313,24 +309,20 @@ return {
             function()
                 return "FMT:"
             end,
-            cond = conditions.is_fmt_attached,
+            cond = function()
+                return #require("conform").list_formatters_for_buffer(0) > 0
+            end,
             color = { fg = colors.yellow },
             padding = { left = 0, right = 1 },
         })
 
         left({
             function()
-                local fmt_names = {}
-                local null_ls = require("null-ls")
-                local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-
-                for _, active_source in ipairs(null_ls.get_source({ filetype = buf_ft })) do
-                    table.insert(fmt_names, active_source.name)
-                end
-
-                return table.concat(fmt_names, ", ")
+                return table.concat(require("conform").list_formatters_for_buffer(0), ", ")
             end,
-            cond = conditions.is_fmt_attached,
+            cond = function()
+                return #require("conform").list_formatters_for_buffer(0) > 0
+            end,
             color = { fg = colors.text },
             padding = 0,
         })

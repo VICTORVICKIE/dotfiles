@@ -68,8 +68,8 @@ return { -- LSP Configuration & Plugins
 
                 map("[d", vim.diagnostic.goto_prev, "Go to previous [D]iagnostic message")
                 map("]d", vim.diagnostic.goto_next, "Go to next [D]iagnostic message")
-                map("<leader>de", vim.diagnostic.open_float, "Show diagnostic [E]rror messages")
-                map("<leader>dq", vim.diagnostic.setloclist, "Open diagnostic [Q]uickfix list")
+                map("<leader>le", vim.diagnostic.open_float, "Show diagnostic [E]rror messages")
+                map("<leader>lq", vim.diagnostic.setloclist, "Open diagnostic [Q]uickfix list")
 
                 local client = vim.lsp.get_client_by_id(event.data.client_id)
                 if client and client.server_capabilities.documentHighlightProvider then
@@ -82,6 +82,14 @@ return { -- LSP Configuration & Plugins
                         buffer = event.buf,
                         callback = vim.lsp.buf.clear_references,
                     })
+
+                    vim.api.nvim_create_autocmd("LspDetach", {
+                        group = vim.api.nvim_create_augroup("victor-lsp-detach", { clear = true }),
+                        callback = function(event2)
+                            vim.lsp.buf.clear_references()
+                            vim.api.nvim_clear_autocmds({ group = "victor-lsp-highlight", buffer = event2.buf })
+                        end,
+                    })
                 end
             end,
         })
@@ -89,63 +97,10 @@ return { -- LSP Configuration & Plugins
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-        local function python_path()
-            local default_exepath = vim.fn.exepath("python3") or vim.fn.exepath("python")
-
-            if vim.fn.isdirectory("venv") then
-                local exepath = vim.fs.find({ "python", "python.exe" }, { path = "venv" })[1]
-                return exepath or default_exepath
-            end
-
-            return default_exepath
-        end
-
-        local servers = {
-            rust_analyzer = {},
-            jdtls = {},
-            tsserver = {},
-            svelte = {},
-            pyright = {
-                settings = {
-                    python = {
-                        pythonPath = python_path(),
-                    },
-                },
-            },
-            html = {},
-            gopls = {},
-            lua_ls = {
-                -- cmd = {...},
-                -- filetypes { ...},
-                -- capabilities = {},
-                settings = {
-                    Lua = {
-                        runtime = {
-                            version = "LuaJIT",
-                        },
-                        diagnostics = {
-                            disable = { "missing-fields" },
-                        },
-                        workspace = {
-                            checkThirdParty = false,
-                            -- library = {
-                            --     "${3rd}/luv/library",
-                            --     unpack(vim.api.nvim_get_runtime_file("", true)),
-                            -- },
-                            library = { "${3rd}/luv/library", vim.env.VIMRUNTIME },
-                        },
-                    },
-                },
-            },
-        }
-
-        local ensure_installed = vim.tbl_keys(servers)
+        local servers = require("tools").lang_servers
 
         require("mason").setup()
         require("mason-lspconfig").setup({
-            ensure_installed = ensure_installed,
-            automatic_installation = true,
-
             handlers = {
                 function(server_name)
                     local server = servers[server_name] or {}
