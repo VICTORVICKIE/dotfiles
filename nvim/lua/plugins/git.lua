@@ -8,7 +8,26 @@ return {
         },
         config = function()
             local neogit = require("neogit")
-            neogit.setup({})
+            neogit.setup({
+                mappings = {
+                    commit_editor = {
+                        ["<C-y>"] = "Submit",
+                        ["<C-c>"] = "Abort",
+                    },
+                    commit_editor_I = {
+                        ["<C-y>"] = "Submit",
+                        ["<C-c>"] = "Abort",
+                    },
+                    rebase_editor = {
+                        ["<C-y>"] = "Submit",
+                        ["<C-c>"] = "Abort",
+                    },
+                    rebase_editor_I = {
+                        ["<C-y>"] = "Submit",
+                        ["<C-c>"] = "Abort",
+                    },
+                },
+            })
             vim.keymap.set("n", "<leader>g", neogit.open)
         end,
     },
