@@ -18,10 +18,10 @@ local formatters = {
             "Spaces",
         },
     },
-    gofmt = {
-        name = "gofmt",
-        filetypes = { "go" },
-    },
+    -- gofmt = {
+    --     name = "gofmt",
+    --     filetypes = { "go" },
+    -- },
     prettierd = {
         name = "prettierd",
         filetypes = { "javascript", "typescript", "svelte", "html", "css", "json" },
@@ -47,7 +47,6 @@ local formatters = {
             "79",
         },
     },
-
     clang_format = {
         name = "clang-format",
         filetypes = { "c", "cpp" },
@@ -115,11 +114,15 @@ return {
     lang_servers = lang_servers,
     formatters = formatters,
     ensure_installed = vim.list_extend(
-        vim.tbl_map(function(v)
-            return v.name
-        end, lang_servers),
-        vim.tbl_map(function(v)
-            return v.name
-        end, formatters)
+        vim.iter(lang_servers)
+            :map(function(k, v)
+                return v.name
+            end)
+            :totable(),
+        vim.iter(formatters)
+            :map(function(k, v)
+                return v.name
+            end)
+            :totable()
     ),
 }

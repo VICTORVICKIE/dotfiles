@@ -30,6 +30,10 @@ return {
                     LspReferenceText = { link = "Visual" },
                     LspReferenceRead = { link = "Visual" },
                     LspReferenceWrite = { link = "Visual" },
+                    VM_Mono = { link = "TermCursor"},
+                    VM_Extend = { link = "IncSearch"},
+                    VM_Cursor = { link = "TermCursor"},
+                    VM_Insert = { link = "CursorLine"},
                 }
             end,
 

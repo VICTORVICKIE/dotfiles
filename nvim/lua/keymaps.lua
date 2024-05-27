@@ -12,7 +12,8 @@ end
 
 -- Terminal
 keymap("t", "<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode")
-
+vim.keymap.set('n', '<C-c>', '<cmd>nohlsearch<CR>')
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- disable arrow keys
 -- keymap({"n", "v"}, "<Up>", "<Nop>")
 -- keymap({"n", "v"}, "<Down>", "<Nop>")

@@ -1,10 +1,10 @@
 -- Neovide
 if vim.g.neovide then
-	vim.g.neovide_transparency = 1.0
-	vim.g.neovide_refresh_rate = 144
-	vim.g.neovide_unlink_border_highlights = true
-	vim.g.neovide_scroll_animation_length = 0
-	vim.g.neovide_scale_factor = 1.0
+    vim.g.neovide_transparency = 1.0
+    vim.g.neovide_refresh_rate = 144
+    vim.g.neovide_unlink_border_highlights = true
+    vim.g.neovide_scroll_animation_length = 0
+    vim.g.neovide_scale_factor = 1.0
 end
 
 local opt = vim.opt
@@ -20,7 +20,7 @@ opt.wrap = false
 opt.incsearch = true
 opt.ignorecase = true
 opt.smartcase = true
-opt.hlsearch = false
+opt.hlsearch = true
 
 -- Appearance
 opt.relativenumber = true
@@ -33,14 +33,14 @@ opt.cmdheight = 1
 opt.scrolloff = 10
 opt.completeopt = "menuone,noinsert,noselect"
 opt.fillchars = {
-	eob = " ",
-	horiz = "═",
-	horizup = "╩",
-	horizdown = "╦",
-	vert = "║",
-	vertleft = "╣",
-	vertright = "╠",
-	verthoriz = "╬",
+    eob = " ",
+    horiz = "═",
+    horizup = "╩",
+    horizdown = "╦",
+    vert = "║",
+    vertleft = "╣",
+    vertright = "╠",
+    verthoriz = "╬",
 }
 opt.list = true
 opt.listchars = { tab = "» ", trail = "·", nbsp = "␣", eol = "↲" }

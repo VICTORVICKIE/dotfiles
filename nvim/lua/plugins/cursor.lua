@@ -14,6 +14,8 @@ return {
         vim.g.VM_custom_remaps = {
             ["<C-c>"] = "<Esc>",
         }
+        vim.g.VM_highlight_matches = ""
+
     end,
     config = function()
         vim.keymap.set("n", "<C-d>", "<Plug>(VM-Find-Under)")
@@ -21,6 +23,8 @@ return {
         vim.keymap.set("n", "<C-s>", "<Plug>(VM-Skip-Region)")
         vim.keymap.set("n", "<C-Up>", "<Plug>(VM-Add-Cursor-Up)")
         vim.keymap.set("n", "<C-Down>", "<Plug>(VM-Add-Cursor-Down)")
+        vim.keymap.set("n", "<S-Left>", "<Plug>(VM-Select-h)")
+        vim.keymap.set("n", "<S-Right>", "<Plug>(VM-Select-l)")
         vim.keymap.set("n", "<C-LeftMouse>", "<Plug>(VM-Mouse-Cursor)")
         vim.keymap.set("n", "<C-RightMouse>", "<Plug>(VM-Mouse-Column)")
     end,

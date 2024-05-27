@@ -58,18 +58,6 @@ return {
             return mode
         end
 
-        local function is_attached(predicate)
-            return function()
-                local clients = vim.lsp.get_clients({ bufnr = 0 })
-                for _, client in ipairs(clients) do
-                    if predicate(client) then
-                        return true
-                    end
-                end
-                return false
-            end
-        end
-
         local conditions = {
             buffer_not_empty = function()
                 return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
@@ -149,6 +137,27 @@ return {
                         "filename",
                         path = 1,
                         color = { fg = colors.subtle },
+                    },
+                },
+            },
+            tabline = {
+                lualine_a = {
+                    {
+                        "tabs",
+                        mode = 2,
+                        use_mode_colors = true,
+                        tabs_color = {
+                            -- Same values as the general color option can be used here.
+                            active = { fg = c.fg }, -- Color for active tab.
+                            inactive = { fg = c.fg_gutter }, -- Color for inactive tab.
+                        },
+                        fmt = function(name, ctx)
+                            if string.find(name, "Neogit") then
+                                return "Neogit"
+                            else
+                                return string.upper(vim.fs.basename(vim.fn.getcwd(-1, ctx.tabnr)))
+                            end
+                        end,
                     },
                 },
             },
