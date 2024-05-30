@@ -22,9 +22,9 @@ local formatters = {
     --     name = "gofmt",
     --     filetypes = { "go" },
     -- },
-    prettierd = {
-        name = "prettierd",
-        filetypes = { "javascript", "typescript", "svelte", "html", "css", "json" },
+    prettier = {
+        name = "prettier",
+        filetypes = { "javascript", "typescript", "html", "css", "json" },
         args = {
             "--bracket-same-line",
             "--tab-width",
@@ -81,6 +81,10 @@ local lang_servers = {
     html = {
         name = "html",
     },
+    gdscript = {
+        name = "gopls",
+        external = true,
+    },
     gopls = {
         name = "gopls",
     },
@@ -116,12 +120,16 @@ return {
     ensure_installed = vim.list_extend(
         vim.iter(lang_servers)
             :map(function(k, v)
-                return v.name
+                if not v.external then
+                    return v.name
+                end
             end)
             :totable(),
         vim.iter(formatters)
             :map(function(k, v)
-                return v.name
+                if not v.external then
+                    return v.name
+                end
             end)
             :totable()
     ),

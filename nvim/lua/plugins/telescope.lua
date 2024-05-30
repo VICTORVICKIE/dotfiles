@@ -48,6 +48,9 @@ return {
         },
         config = function()
             require("telescope").setup({
+                defaults = {
+                    mappings = { i = { ["<C-v>"] = false } },
+                },
                 extensions = {
                     ["ui-select"] = { require("telescope.themes").get_dropdown({}) },
                 },

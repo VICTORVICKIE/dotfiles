@@ -16,12 +16,12 @@ return {
 
             persisted.setup({
                 autosave = true,
+                ignored_dirs = { { os.getenv("DEV") or "", exact = true } },
                 should_autosave = function()
                     local excluded_filetypes = {
                         "alpha",
                         "mason",
                         "lazy",
-                        "",
                     }
 
                     for _, excluded_ft in ipairs(excluded_filetypes) do

@@ -26,10 +26,14 @@ return {
 
         vim.keymap.set("n", "<leader>gm", function()
             terminal("gitu"):toggle()
-        end, { noremap = true, silent = true })
+        end, { noremap = true, silent = true, desc = "gitu" })
 
         vim.keymap.set("n", "<leader>gl", function()
             terminal("lazygit"):toggle()
-        end, { noremap = true, silent = true })
+        end, { noremap = true, silent = true,  desc = "lazygit"})
+
+        vim.keymap.set("n", "<leader>rw", ":RunWT<CR>", {silent = true, desc = "pwsh"})
+        vim.keymap.set("n", "<leader>rt", ":ToggleTerm<CR>", {silent = true, desc = "term"})
+        vim.keymap.set("n", "<leader>ru", ":RunWT wsl<CR>", {silent = true, desc = "wsl"})
     end,
 }

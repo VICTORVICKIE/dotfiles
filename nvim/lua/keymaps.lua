@@ -2,7 +2,8 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-vim.keymap.set("c", "<C-V>", "<C-r>*", { noremap = true })
+vim.keymap.set({"i", "c"}, "<C-v>", "<C-r>*", { noremap = true })
+vim.keymap.set({"i", "c"}, "<C-S-v>", '<C-r>"', { noremap = true })
 
 local keymap = function(mode, keys, func, desc)
     vim.keymap.set(mode, keys, func, { noremap = true, silent = true, desc = desc })
@@ -12,8 +13,8 @@ end
 
 -- Terminal
 keymap("t", "<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode")
-vim.keymap.set('n', '<C-c>', '<cmd>nohlsearch<CR>')
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+vim.keymap.set("n", "<C-c>", "<cmd>nohlsearch<CR>")
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 -- disable arrow keys
 -- keymap({"n", "v"}, "<Up>", "<Nop>")
 -- keymap({"n", "v"}, "<Down>", "<Nop>")
@@ -52,10 +53,10 @@ keymap("n", "n", "nzzzv")
 keymap("n", "N", "Nzzzv")
 
 keymap("x", "<leader>p", '"_dP')
-vim.keymap.set({"n", "v"}, "<leader>p", '"+p', {remap = true})
-vim.keymap.set({"n", "v"}, "<leader>P", '"+P', {remap = true})
-vim.keymap.set({"n", "v"}, "<leader>y", '"+y', {remap = true})
-vim.keymap.set({"n", "v"}, "<leader>Y", '"+Y', {remap = true})
+vim.keymap.set({ "n", "v" }, "<leader>p", '"+p', { remap = true })
+vim.keymap.set({ "n", "v" }, "<leader>P", '"+P', { remap = true })
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y', { remap = true })
+vim.keymap.set({ "n", "v" }, "<leader>Y", '"+Y', { remap = true })
 keymap({ "n", "v" }, "<leader>d", '"_d')
 keymap("i", "<C-c>", "<Esc>")
 
@@ -66,4 +67,3 @@ if vim.g.neovide then
     keymap("n", "<C-->", ":lua vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * 0.9<CR>")
     keymap("n", "<C-BS>", ":lua vim.g.neovide_scale_factor = 1.0<CR>")
 end
-
