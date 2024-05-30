@@ -16,7 +16,6 @@ return {
 
             persisted.setup({
                 autosave = true,
-                ignored_dirs = { { os.getenv("DEV") or "", exact = true } },
                 should_autosave = function()
                     local excluded_filetypes = {
                         "alpha",

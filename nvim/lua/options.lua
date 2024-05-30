@@ -2,25 +2,25 @@
 if vim.g.neovide then
     vim.g.neovide_transparency = 1.0
     vim.g.neovide_refresh_rate = 144
-    vim.g.neovide_unlink_border_highlights = true
-    vim.g.neovide_scroll_animation_length = 0
     vim.g.neovide_scale_factor = 1.0
+    vim.g.neovide_scroll_animation_length = 0
+    vim.g.neovide_unlink_border_highlights = true
 end
 
 local opt = vim.opt
 -- Indentation
 opt.tabstop = 4
+opt.wrap = false
 opt.shiftwidth = 4
 opt.softtabstop = 4
 opt.expandtab = true
 opt.smartindent = true
-opt.wrap = false
 
 -- Search
-opt.incsearch = true
-opt.ignorecase = true
-opt.smartcase = true
 opt.hlsearch = true
+opt.incsearch = true
+opt.smartcase = true
+opt.ignorecase = true
 
 -- Appearance
 opt.relativenumber = true

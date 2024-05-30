@@ -1,13 +1,5 @@
 -- Auto Command
 local victor_group = vim.api.nvim_create_augroup("victor", { clear = true })
-vim.api.nvim_create_autocmd("VimEnter", {
-    group = victor_group,
-    callback = function()
-        if os.getenv("DEV") then
-            vim.cmd("cd $DEV")
-        end
-    end,
-})
 
 vim.api.nvim_create_autocmd("VimLeavePre", {
     group = victor_group,

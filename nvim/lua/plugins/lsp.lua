@@ -30,18 +30,14 @@ return { -- LSP Configuration & Plugins
                     })
                 end
 
-                map("<leader>ld", telescope_builtin.lsp_definitions, "goto definition")
-
+                map("<leader>lr", vim.lsp.buf.rename, "symbol rename")
+                map("<leader>lh", vim.lsp.buf.hover, "hover documentation")
                 map("<leader>lD", vim.lsp.buf.declaration, "goto declaration")
-
-                map("<leader>lr", telescope_builtin.lsp_references, "goto references")
-
-                map("<leader>lR", vim.lsp.buf.rename, "symbol rename")
-
-                map("<leader>li", telescope_builtin.lsp_implementations, "goto implementation")
-
+                map("<leader>lR", telescope_builtin.lsp_references, "goto references")
+                map("<leader>ld", telescope_builtin.lsp_definitions, "goto definition")
+                map("<leader>lt", telescope_builtin.lsp_type_definitions, "type definition")
                 map("<leader>ls", telescope_builtin.lsp_document_symbols, "symbols document")
-
+                map("<leader>li", telescope_builtin.lsp_implementations, "goto implementation")
                 map("<leader>lw", telescope_builtin.lsp_dynamic_workspace_symbols, "symbols workspace")
 
                 map("<leader>la", function()
@@ -51,10 +47,6 @@ return { -- LSP Configuration & Plugins
                         },
                     })
                 end, "Code Action")
-
-                map("<leader>lt", telescope_builtin.lsp_type_definitions, "type definition")
-
-                map("<leader>lh", vim.lsp.buf.hover, "hover documentation")
 
                 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
                     border = "rounded",

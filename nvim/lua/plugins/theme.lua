@@ -10,14 +10,14 @@ return {
         require("monokai-pro").setup({
 
             styles = {
+                type = { italic = false },
                 comment = { italic = true },
-                keyword = { italic = false }, -- any other keyword
-                type = { italic = false }, -- (preferred) int, long, char, etc
-                storageclass = { italic = false }, -- static, register, volatile, etc
-                structure = { italic = false }, -- struct, union, enum, etc
-                parameter = { italic = false }, -- parameter pass in function
+                keyword = { italic = false },
+                structure = { italic = false },
+                parameter = { italic = false },
                 annotation = { italic = false },
-                tag_attribute = { italic = false }, -- attribute of tag in reactjs
+                storageclass = { italic = false },
+                tag_attribute = { italic = false },
             },
 
             background_clear = { "float_win", "telescope", "which-key" },
@@ -25,15 +25,15 @@ return {
             override = function(c)
                 return {
                     NonText = { fg = colors.dark3 },
-                    Directory = { fg = c.base.blue, bg = colors.background },
-                    WinSeparator = { fg = c.base.white },
-                    LspReferenceText = { link = "Visual" },
-                    LspReferenceRead = { link = "Visual" },
-                    LspReferenceWrite = { link = "Visual" },
                     VM_Mono = { link = "TermCursor"},
                     VM_Extend = { link = "IncSearch"},
                     VM_Cursor = { link = "TermCursor"},
                     VM_Insert = { link = "CursorLine"},
+                    WinSeparator = { fg = c.base.white },
+                    LspReferenceText = { link = "Visual" },
+                    LspReferenceRead = { link = "Visual" },
+                    LspReferenceWrite = { link = "Visual" },
+                    Directory = { fg = c.base.blue, bg = colors.background },
                 }
             end,
 
