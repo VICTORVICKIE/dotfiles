@@ -3,22 +3,26 @@ using namespace System.Management.Automation.Language
 
 New-Alias vim nvim
 New-Alias vi nvim
-New-Alias sudo gsudo
-New-Alias which get-command
-New-Alias touch ni
 #New-Alias npm pnpm
 New-Alias activate "./venv/Scripts/activate"
 New-Alias spython "C:\Programming\Python\python.exe"
 New-Alias spip "C:\Programming\Python\Scripts\pip.exe"
 
-function symlink ($target, $link) {
-    New-Item -Path $link -ItemType SymbolicLink -Value $target
+
+if ($IsWindows) {
+    New-Alias sudo gsudo
+    New-Alias touch ni
+    New-Alias which get-command
+    Remove-Alias -Name man 
+    function man { wsl man $args }
+    function symlink ($target, $link) {
+        New-Item -Path $link -ItemType SymbolicLink -Value $target
+    }
+    function export { $env:Path += ';' + $args }
+    Set-PSReadLineKeyHandler -Chord Ctrl-a -Function BeginningOfLine
+    Set-PSReadLineKeyHandler -Chord Ctrl-e -Function EndOfLine
 }
 
-Remove-Alias -Name man 
-function man { wsl man $args }
-
-function export { $env:Path += ';' + $args }
 $env:VIRTUAL_ENV_DISABLE_PROMPT = 1
 
 

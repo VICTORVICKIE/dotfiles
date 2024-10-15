@@ -18,13 +18,14 @@ local formatters = {
             "Spaces",
         },
     },
-    -- gofmt = {
-    --     name = "gofmt",
-    --     filetypes = { "go" },
-    -- },
+    gofmt = {
+        name = "gofmt",
+        external = true,
+        filetypes = { "go" },
+    },
     prettier = {
         name = "prettier",
-        filetypes = { "javascript", "typescript", "html", "css", "json" },
+        filetypes = { "javascript", "typescript", "html", "css", "json", "astro" },
         args = {
             "--bracket-same-line",
             "--tab-width",
@@ -34,6 +35,10 @@ local formatters = {
             "--quote-props",
             "preserve",
         },
+    },
+    latexindent = {
+        name = "latexindent",
+        filetypes = { "tex" },
     },
     isort = {
         name = "isort",
@@ -52,6 +57,10 @@ local formatters = {
         filetypes = { "c", "cpp" },
         args = { "-style={BasedOnStyle: LLVM, IndentWidth: 4}" },
     },
+    xmlformatter = {
+        name = "xmlformatter",
+        filetypes = { "xml" },
+    },
 }
 
 local lang_servers = {
@@ -60,15 +69,28 @@ local lang_servers = {
     },
     jdtls = {
         name = "jdtls",
+        root_dir = require("jdtls.setup").find_root({ "mvnw", "gradlew", ".git" }),
     },
-    tsserver = {
-        name = "tsserver",
+    vtsls = {
+        name = "vtsls",
+    },
+    --◍ css-lsp cssls (keywords: css, scss, less)
+    --◍ css-variables-language-server css_variables (keywords: css, scss, less)
+    --
+    css_variables = {
+        name = "css-variables-language-server",
+    },
+    cssls = {
+        name = "css-lsp",
     },
     tailwindcss = {
         name = "tailwindcss",
     },
     svelte = {
         name = "svelte",
+        settings = {
+            svelte = { plugin = { svelte = { format = { config = { printWidth = 120, bracketSameLine = true } } } } },
+        },
     },
     pyright = {
         name = "pyright",

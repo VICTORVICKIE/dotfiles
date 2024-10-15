@@ -7,6 +7,7 @@ return {
     },
     {
         "olimorris/persisted.nvim",
+        commit = "2b4f192",
         config = function()
             local persisted = require("persisted")
             require("telescope").load_extension("persisted")
@@ -15,8 +16,8 @@ return {
             end, { desc = "session" })
 
             persisted.setup({
-                autosave = true,
-                should_autosave = function()
+                autostart = true,
+                should_save = function()
                     local excluded_filetypes = {
                         "alpha",
                         "mason",
@@ -34,7 +35,7 @@ return {
             })
             local group = vim.api.nvim_create_augroup("PersistedHooks", {})
 
-            vim.api.nvim_create_autocmd({ "User" }, {
+            vim.api.nvim_create_autocmd("User", {
                 pattern = "PersistedTelescopeLoadPre",
                 group = group,
                 callback = function()

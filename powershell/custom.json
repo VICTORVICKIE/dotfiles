@@ -1,5 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+    "pwd": "osc99",
     "palette": {
         "name": "Tokyo Night",
         "background": "#1A1B26",

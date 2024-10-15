@@ -11,10 +11,13 @@ return {
                     show_hidden = true,
                 },
                 constrain_cursor = "name",
+                skip_confirm_for_simple_edits = true,
             })
 
             -- Open parent directory in floating window
-            vim.keymap.set("n", "<C-n>", require("oil").toggle_float)
+            vim.keymap.set("n", "<C-n>", function()
+                require("oil").toggle_float()
+            end)
         end,
     },
 }

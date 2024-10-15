@@ -30,7 +30,7 @@ opt.termguicolors = true
 -- opt.colorcolumn = '120'
 opt.signcolumn = "yes"
 opt.cmdheight = 1
-opt.scrolloff = 10
+opt.scrolloff = 2
 opt.completeopt = "menuone,noinsert,noselect"
 opt.fillchars = {
     eob = " ",
@@ -65,9 +65,13 @@ opt.encoding = "UTF-8"
 opt.updatetime = 250
 opt.timeoutlen = 300
 -- Shell
-opt.shell = "pwsh"
-opt.shellcmdflag = "-NoLogo -ExecutionPolicy RemoteSigned -Command "
-opt.shellquote = ""
-opt.shellxquote = ""
-opt.shellpipe = "| Out-File -Encoding UTF8 %s>"
-opt.shellredir = "| Out-File -Encoding UTF8 %s"
+if vim.fn.has("win32") == 1 and vim.fn.executable("pwsh") == 1 then
+    opt.shell = "pwsh"
+    opt.shellcmdflag = "-NoLogo -ExecutionPolicy RemoteSigned -Command "
+    opt.shellquote = ""
+    opt.shellxquote = ""
+    opt.shellpipe = "| Out-File -Encoding UTF8 %s>"
+    opt.shellredir = "| Out-File -Encoding UTF8 %s"
+elseif vim.fn.has("wsl") then
+    opt.shell = "bash -l"
+end

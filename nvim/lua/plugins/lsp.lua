@@ -3,6 +3,7 @@ return { -- LSP Configuration & Plugins
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "mfussenegger/nvim-jdtls",
+        "nvim-java/nvim-java",
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
         {
@@ -65,13 +66,16 @@ return { -- LSP Configuration & Plugins
 
                 local client = vim.lsp.get_client_by_id(event.data.client_id)
                 if client and client.server_capabilities.documentHighlightProvider then
+                    local highlight_augroup = vim.api.nvim_create_augroup("victor-lsp-highlight", { clear = false })
                     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
                         buffer = event.buf,
+                        group = highlight_augroup,
                         callback = vim.lsp.buf.document_highlight,
                     })
 
                     vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
                         buffer = event.buf,
+                        group = highlight_augroup,
                         callback = vim.lsp.buf.clear_references,
                     })
 

@@ -4,6 +4,7 @@ return { -- Autocompletion
     dependencies = {
         {
             "L3MON4D3/LuaSnip",
+            version = "v2.*",
             build = (function()
                 if vim.fn.executable("make") == 0 then
                     return

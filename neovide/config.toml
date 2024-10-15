@@ -1,2 +1,3 @@
 vsync = false
 maximized = true
+wsl = true

@@ -36,6 +36,7 @@ return {
         event = "VimEnter",
         dependencies = {
             "nvim-lua/plenary.nvim",
+            -- "chip/telescope-software-licenses.nvim",
             {
                 "nvim-telescope/telescope-fzf-native.nvim",
                 build = "make",
@@ -59,6 +60,7 @@ return {
             -- Enable telescope extensions, if they are installed
             pcall(require("telescope").load_extension, "fzf")
             pcall(require("telescope").load_extension, "ui-select")
+            -- pcall(require("telescope").load_extension, "software-licenses")
 
             local builtin = require("telescope.builtin")
             vim.keymap.set("n", "<Leader>th", builtin.help_tags, { desc = "help" })
@@ -67,8 +69,9 @@ return {
             vim.keymap.set("n", "<Leader>tk", builtin.keymaps, { desc = "keymaps" })
             vim.keymap.set("n", "<Leader>tl", builtin.live_grep, { desc = "live grep" })
             vim.keymap.set("n", "<Leader>td", builtin.diagnostics, { desc = "diagnostics" })
-            vim.keymap.set("n", "<Leader>tg", builtin.grep_string, { desc = "grep string" })
+            vim.keymap.set("n", "<Leader>tr", builtin.grep_string, { desc = "grep string" })
             vim.keymap.set("n", "<Leader>tp", builtin.filetypes, { desc = "pick filetype" })
+            vim.keymap.set("n", "<Leader>tg", builtin.git_branches, { desc = "git branch" })
         end,
     },
 }

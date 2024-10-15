@@ -1,6 +1,8 @@
 -- Auto Command
 local victor_group = vim.api.nvim_create_augroup("victor", { clear = true })
 
+local fn = vim.fn
+
 vim.api.nvim_create_autocmd("VimLeavePre", {
     group = victor_group,
     callback = function()
@@ -17,18 +19,25 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.api.nvim_create_user_command("RunWT", function(opts)
-    if vim.fn.executable("wt.exe") == 0 then
+    if fn.executable("wt.exe") == 0 then
         vim.api.nvim_echo({ { "Windows Terminal is not installed.", "ErrorMsg" } }, true, {})
         return
     end
 
     local job_id = 0
-    if vim.fn.has("win32") and string.find(opts.args, "wsl") and vim.fn.executable("wsl.exe") then
-        job_id = vim.fn.jobstart({ "wt.exe", "-w", "0", "nt", "-p", "Ubuntu", "-d", vim.fn.getcwd(), "wsl" })
-    elseif vim.fn.has("wsl") and string.find(opts.args, "wsl") then
-        job_id = vim.fn.jobstart({ "wt.exe", "-w", "0", "nt", "-p", "Ubuntu", "-d", vim.fn.getcwd(), "wsl" })
+
+    local wt = { "wt.exe", "--window", "0", "new-tab" }
+    if opts.args:find("wsl") ~= nil and fn.executable("wsl.exe") then
+        job_id = fn.jobstart(vim.list_extend(wt, { "-p", "Ubuntu", "-d", fn.getcwd() }))
+    elseif opts.args:find("pwsh") ~= nil and fn.executable("pwsh.exe") == 1 then
+        if fn.has("win32") == 1 then
+            job_id = fn.jobstart(vim.list_extend(wt, { "-p", "PowerShell", "-d", fn.getcwd() }))
+        elseif fn.has("wsl") == 1 then
+            local cwd = fn.system({ "wslpath", "-m", fn.getcwd() }):gsub("%s+", "")
+            job_id = fn.jobstart(vim.list_extend(wt, { "-p", "PowerShell", "-d", cwd }))
+        end
     else
-        job_id = vim.fn.jobstart({ "wt.exe", "-w", "0", "nt", "-d", vim.fn.getcwd() })
+        assert(false, "Unreachable")
     end
 
     if job_id <= 0 then
@@ -36,25 +45,25 @@ vim.api.nvim_create_user_command("RunWT", function(opts)
         return
     end
 end, {
-    nargs = "?",
+    nargs = 1,
     complete = function()
-        return { "wsl" }
+        return { "pwsh", "wsl" }
     end,
 })
 
 vim.api.nvim_create_user_command("RunNeovide", function(opts)
-    if vim.fn.executable("neovide") == 0 and vim.fn.executable("neovide.exe") == 0 then
+    if fn.executable("neovide") == 0 and fn.executable("neovide.exe") == 0 then
         vim.api.nvim_echo({ { "Neovide is not installed.", "ErrorMsg" } }, true, {})
         return
     end
 
     local job_id = 0
-    if vim.fn.has("win32") and string.find(opts.args, "wsl") and vim.fn.executable("wsl.exe") then
-        job_id = vim.fn.jobstart({ "neovide.exe", "--wsl" }, { detach = true })
-    elseif vim.fn.has("wsl") and vim.fn.executable("neovide") == 0 then
-        job_id = vim.fn.jobstart({ "neovide.exe" }, { detach = true })
+    if fn.has("win32") and string.find(opts.args, "wsl") and fn.executable("wsl.exe") then
+        job_id = fn.jobstart({ "neovide.exe", "--wsl" }, { detach = true })
+    elseif fn.has("wsl") and fn.executable("neovide") == 0 then
+        job_id = fn.jobstart({ "neovide.exe" }, { detach = true })
     else
-        job_id = vim.fn.jobstart({ "neovide" }, { detach = true })
+        job_id = fn.jobstart({ "neovide" }, { detach = true })
     end
 
     if job_id <= 0 then
@@ -73,7 +82,7 @@ end, {
 })
 
 vim.api.nvim_create_user_command("DelHidBufs", function()
-    local bufinfos = vim.fn.getbufinfo({ buflisted = true })
+    local bufinfos = fn.getbufinfo({ buflisted = true })
     local hidden = 0
     vim.tbl_map(function(bufinfo)
         if bufinfo.changed == 0 and (not bufinfo.windows or #bufinfo.windows == 0) then

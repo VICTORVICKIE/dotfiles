@@ -194,17 +194,6 @@ return {
 
         left({ "location" })
 
-        left({
-            function()
-                return "WSL"
-            end,
-            cond = function()
-                return vim.fn.has("wsl") == 1
-            end,
-            color = {
-                fg = colors.fg,
-            },
-        })
 
         left({
             "progress",
@@ -360,9 +349,20 @@ return {
 
         right({
             function()
+                return "WSL"
+            end,
+            cond = function()
+                return vim.fn.has("wsl") == 1
+            end,
+            color = {
+                fg = colors.fg,
+            },
+        })
+        --[[ right({
+            function()
                 return string.upper(vim.fn.fnamemodify(vim.fn.getcwd(), ":t"))
             end,
-        })
+        }) ]]
 
         right({
             "o:encoding", -- option component same as &encoding in viml
@@ -380,7 +380,7 @@ return {
         })
 
         right({
-            "branch",
+            "FugitiveHead",
             icon = "",
             color = {
                 fg = colors.violet,
