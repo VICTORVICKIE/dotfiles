@@ -55,7 +55,7 @@ local formatters = {
     clang_format = {
         name = "clang-format",
         filetypes = { "c", "cpp" },
-        args = { "-style={BasedOnStyle: LLVM, IndentWidth: 4}" },
+        args = { "-style={IndentWidth: 4, AllowShortIfStatementsOnASingleLine: true, BreakBeforeBraces: Stroustrup}" },
     },
     xmlformatter = {
         name = "xmlformatter",
