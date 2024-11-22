@@ -19,14 +19,14 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.api.nvim_create_user_command("RunWT", function(opts)
-    if fn.executable("wt.exe") == 0 then
-        vim.api.nvim_echo({ { "Windows Terminal is not installed.", "ErrorMsg" } }, true, {})
-        return
-    end
+    -- if fn.executable("wt.exe") == 0 then
+    --     vim.api.nvim_echo({ { "Windows Terminal is not installed.", "ErrorMsg" } }, true, {})
+    --     return
+    -- end
 
     local job_id = 0
 
-    local wt = { "wt.exe", "--window", "0", "new-tab" }
+    local wt = { "cmd", "/c", "wt.exe", "--window", "0", "new-tab" }
     if opts.args:find("wsl") ~= nil and fn.executable("wsl.exe") then
         job_id = fn.jobstart(vim.list_extend(wt, { "-p", "Ubuntu", "-d", fn.getcwd() }))
     elseif opts.args:find("pwsh") ~= nil and fn.executable("pwsh.exe") == 1 then

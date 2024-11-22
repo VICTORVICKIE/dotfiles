@@ -3,7 +3,6 @@ return { -- LSP Configuration & Plugins
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "mfussenegger/nvim-jdtls",
-        "nvim-java/nvim-java",
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
         {

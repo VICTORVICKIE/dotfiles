@@ -48,3 +48,4 @@ if ([System.Console]::IsOutputRedirected){
 }
 
 Set-PSReadLineOption -EditMode Windows
+
