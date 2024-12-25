@@ -1,4 +1,5 @@
 return {
+    { "tpope/vim-sleuth" },
     { "lewis6991/gitsigns.nvim", opts = {} },
     { "szw/vim-maximizer", cmd = "MaximizerToggle" },
     { "ThePrimeagen/vim-be-good", cmd = "VimBeGood" },

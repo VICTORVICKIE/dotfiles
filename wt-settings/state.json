@@ -1,0 +1,48 @@
+{
+	"dismissedMessages" : 
+	[
+		"closeOnExitInfo"
+	],
+	"generatedProfiles" : 
+	[
+		"{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+		"{2c4de342-38b7-51cf-b940-2309a097f518}",
+		"{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+		"{aea57335-6824-5790-9dfc-676a685eb58f}",
+		"{88330d40-010b-5073-9981-ad56313c5e7b}",
+		"{4f182cbb-ca4e-5980-9391-651e357b09c2}",
+		"{bc591d44-7ba3-5b09-bfe3-872e56e7cb1a}"
+	],
+	"persistedWindowLayouts" : 
+	[
+		{
+			"initialPosition" : "0,-8",
+			"initialSize" : 
+			{
+				"height" : 1001.0,
+				"width" : 1920.0
+			},
+			"launchMode" : "maximized",
+			"tabLayout" : 
+			[
+				{
+					"action" : "newTab",
+					"commandline" : "wsl.exe -d Ubuntu",
+					"profile" : "Ubuntu",
+					"startingDirectory" : "/c/Users/SVick/scoop/apps/windows-terminal/1.20.11271.0",
+					"suppressApplicationTitle" : false,
+					"tabTitle" : "Ubuntu"
+				},
+				{
+					"action" : "newTab",
+					"commandline" : "\"C:\\Program Files\\PowerShell\\7\\pwsh.exe\"",
+					"profile" : "PowerShell",
+					"startingDirectory" : "C:\\Users\\SVick",
+					"suppressApplicationTitle" : false,
+					"tabTitle" : "PowerShell"
+				}
+			]
+		}
+	],
+	"settingsHash" : "17974b6c4f01ee5a-01dabe3cb2e8cd63"
+}

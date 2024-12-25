@@ -1,6 +1,7 @@
 return { -- LSP Configuration & Plugins
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    -- event = { "BufReadPre", "BufNewFile" },
+    lazy = false,
     dependencies = {
         "mfussenegger/nvim-jdtls",
         "williamboman/mason.nvim",
@@ -99,13 +100,13 @@ return { -- LSP Configuration & Plugins
             handlers = {
                 function(server_name)
                     local server = servers[server_name] or {}
-                    require("lspconfig")[server_name].setup({
-                        cmd = server.cmd,
-                        settings = server.settings,
-                        filetypes = server.filetypes,
+                    require("lspconfig")[server_name].setup(vim.tbl_deep_extend("force", {}, {
+                        -- cmd = server.cmd,
+                        -- settings = server.settings,
+                        -- filetypes = server.filetypes,
                         root_dir = vim.loop.cwd,
                         capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {}),
-                    })
+                    }, server))
                 end,
             },
         })

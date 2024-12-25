@@ -29,6 +29,16 @@ return {
         "folke/todo-comments.nvim",
         event = "VimEnter",
         dependencies = { "nvim-lua/plenary.nvim" },
-        opts = { signs = false },
+        config = function()
+            local comments = require("todo-comments")
+            comments.setup({ signs = false, highlight = { keyword = "wide_fg" } })
+            vim.keymap.set("n", "]t", function()
+                comments.jump_next()
+            end, { desc = "Next keyword comment" })
+
+            vim.keymap.set("n", "[t", function()
+                comments.jump_prev()
+            end, { desc = "Previous keyword comment" })
+        end,
     },
 }

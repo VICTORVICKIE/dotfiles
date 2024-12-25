@@ -2,22 +2,26 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-
 local keymap = function(mode, keys, func, desc)
     vim.keymap.set(mode, keys, func, { noremap = true, silent = true, desc = desc })
 end
 
+-- function CommandCallback()
+--     local last_command = vim.fn.getreg(":")
+--
+--     if string.match(last_command, "^G") or string.match(last_command, "^Git") then
+--         vim.cmd("wincmd L")
+--     end
+-- end
+--
+-- keymap("c", "<CR>", "<CR>:lua CommandCallback()<CR>", "Hack for Command Callbacks")
+--
 -- Keymaps
 
 -- Terminal
 keymap("t", "<Esc><Esc>", "<C-\\><C-n>", "Exit terminal mode")
 vim.keymap.set("n", "<C-c>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
--- disable arrow keys
--- keymap({"n", "v"}, "<Up>", "<Nop>")
--- keymap({"n", "v"}, "<Down>", "<Nop>")
--- keymap({"n", "v"}, "<Right>", "<Nop>")
--- keymap({"n", "v"}, "<Left>", "<Nop>")
 
 -- move text up and down
 keymap("v", "<A-j>", ":m '>+1<CR>gv=gv")
@@ -34,8 +38,7 @@ keymap("v", "<Tab>", ">gv") -- Left Indentation
 -- Window Management
 keymap("n", "<leader>wv", ":vsplit<CR>", "split vertical") -- Split Vertical
 keymap("n", "<leader>wh", ":split<CR>", "split horizontal") -- Split Horizontal
-keymap("n", "<leader>wm", ":MaximizerToggle<CR>", "split toggle") -- Toggle Minimize
-keymap("n", "<C-b>", ":vsplit .<CR>")
+keymap("n", "<C-w_m>", ":MaximizerToggle<CR>", "split toggle") -- Toggle Minimize
 keymap("n", "<C-k>", "<c-w>k")
 keymap("n", "<C-j>", "<c-w>j")
 keymap("n", "<C-h>", "<c-w>h")
@@ -52,8 +55,8 @@ keymap("n", "N", "Nzzzv")
 
 -- keymap("x", "<leader>p", '"_dP')
 -- keymap({ "n", "v" }, "<leader>d", '"_d')
-vim.keymap.set({"i", "c"}, "<C-v>", '<C-r>"', { noremap = true })
-vim.keymap.set({"i", "c"}, "<C-S-v>", "<C-r>*", { noremap = true })
+vim.keymap.set({ "i", "c" }, "<C-v>", '<C-r>"', { noremap = true })
+vim.keymap.set({ "i", "c" }, "<C-S-v>", "<C-r>*", { noremap = true })
 
 vim.keymap.set({ "n", "v" }, "<leader>p", '"+p', { remap = true })
 vim.keymap.set({ "n", "v" }, "<leader>P", '"+P', { remap = true })

@@ -32,7 +32,7 @@ return {
     -- Telescope
     {
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.5",
+        branch = "0.1.x",
         event = "VimEnter",
         dependencies = {
             "nvim-lua/plenary.nvim",

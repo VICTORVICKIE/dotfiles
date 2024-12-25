@@ -6,6 +6,8 @@ local fn = vim.fn
 vim.api.nvim_create_autocmd("VimLeavePre", {
     group = victor_group,
     callback = function()
+        vim.lsp.stop_client(vim.lsp.get_clients())
+        vim.cmd("Neotree filesystem close")
         vim.cmd("DelHidBufs")
         vim.cmd("SessionSave")
     end,

@@ -1,86 +1,103 @@
--- NOTE: See the end of this file if you are reporting an issue, etc. Ignore all the "scary" functions up top, those are
--- used for setup and other operations.
-local M = {}
+local root = "/tmp/persisted"
 
-local base_root_path = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":p:h") .. "/.min"
-function M.root(path)
-    return base_root_path .. "/" .. (path or "")
+-- Set stdpaths to use root dir
+for _, name in ipairs({ "config", "data", "state", "cache" }) do
+    vim.env[("XDG_%s_HOME"):format(name:upper())] = root .. "/" .. name
 end
 
-function M.load_plugin(plugin_name, plugin_url)
-    local package_root = M.root("plugins/")
-    local install_destination = package_root .. plugin_name
-    vim.opt.runtimepath:append(install_destination)
-
-    if not vim.loop.fs_stat(package_root) then
-        vim.fn.mkdir(package_root, "p")
-    end
-
-    if not vim.loop.fs_stat(install_destination) then
-        print(string.format("> Downloading plugin '%s' to '%s'", plugin_name, install_destination))
-        vim.fn.system({
-            "git",
-            "clone",
-            "--depth=1",
-            plugin_url,
-            install_destination,
-        })
-        if vim.v.shell_error > 0 then
-            error(
-                string.format("> Failed to clone plugin: '%s' in '%s'!", plugin_name, install_destination),
-                vim.log.levels.ERROR
-            )
-        end
-    end
-end
-
----@alias PluginName string The plugin name, will be used as part of the git clone destination
----@alias PluginUrl string The git url at which a plugin is located, can be a path. See https://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols for details
----@alias MinPlugins table<PluginName, PluginUrl>
-
----Do the initial setup. Downloads plugins, ensures the minimal init does not pollute the filesystem by keeping
----everything self contained to the CWD of the minimal init file. Run prior to running tests, reproducing issues, etc.
----@param plugins? table<PluginName, PluginUrl>
-function M.setup(plugins)
-    vim.opt.packpath = {} -- Empty the package path so we use only the plugins specified
-    vim.opt.runtimepath:append(M.root(".min")) -- Ensure the runtime detects the root min dir
-
-    -- Install required plugins
-    if plugins ~= nil then
-        for plugin_name, plugin_url in pairs(plugins) do
-            M.load_plugin(plugin_name, plugin_url)
-        end
-    end
-
-    vim.env.XDG_CONFIG_HOME = M.root("xdg/config")
-    vim.env.XDG_DATA_HOME = M.root("xdg/data")
-    vim.env.XDG_STATE_HOME = M.root("xdg/state")
-    vim.env.XDG_CACHE_HOME = M.root("xdg/cache")
-
-    -- NOTE: Cleanup the xdg cache on exit so new runs of the minimal init doesn't share any previous state, e.g. shada
-    vim.api.nvim_create_autocmd("VimLeave", {
-        callback = function()
-            vim.fn.system({
-                "rm",
-                "-r",
-                "-f",
-                M.root("xdg"),
-            })
-        end,
+-- Bootstrap lazy
+local lazypath = root .. "/plugins/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "--single-branch",
+        "https://github.com/folke/lazy.nvim.git",
+        lazypath,
     })
 end
---Vim Options
---
-vim.opt.splitright = true
-vim.opt.splitbelow = true
+vim.opt.runtimepath:prepend(lazypath)
 
--- NOTE: If you have additional plugins you need to install to reproduce your issue, include them in the plugins
--- table within the setup call below.
-M.setup({
-    --telescope = "https://github.com/nvim-telescope/telescope.nvim",
-    plenary = "https://github.com/nvim-lua/plenary.nvim.git",
-    compile_mode = "https://github.com/ej-shafran/compile-mode.nvim",
+vim.opt.sessionoptions = "buffers,curdir,folds,globals,tabpages,winpos,winsize" -- Session options to store in the session
+
+-- Install plugins
+local plugins = {
+    {
+        "olimorris/persisted.nvim",
+        dependencies = { "nvim-telescope/telescope.nvim" },
+        config = function()
+            local persisted = require("persisted")
+            require("telescope").load_extension("persisted")
+
+            persisted.setup({
+                should_save = function()
+                    local excluded_filetypes = {
+                        "alpha",
+                        "neo-tree",
+                        "mason",
+                        "lazy",
+                    }
+
+                    for _, excluded_ft in ipairs(excluded_filetypes) do
+                        if vim.bo.filetype == excluded_ft then
+                            return false
+                        end
+                    end
+
+                    return true
+                end,
+            })
+            local group = vim.api.nvim_create_augroup("PersistedHooks", {})
+
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "PersistedTelescopeLoadPre",
+                group = group,
+                callback = function()
+                    vim.lsp.stop_client(vim.lsp.get_clients())
+                    persisted.save({ session = vim.g.persisted_loaded_session })
+                    vim.cmd("%bd!")
+                end,
+            })
+        end,
+        -- opts = {
+        --     -- Your custom config here
+        -- },
+    },
+    -- Put any other plugins here
+    {
+        "nvim-telescope/telescope.nvim",
+        branch = "0.1.x",
+        event = "VimEnter",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            -- "chip/telescope-software-licenses.nvim",
+            {
+                "nvim-telescope/telescope-fzf-native.nvim",
+                build = "make",
+                cond = function()
+                    return vim.fn.executable("make") == 1
+                end,
+            },
+            -- Telescope UI Select
+            { "nvim-telescope/telescope-ui-select.nvim" },
+        },
+        config = function()
+            require("telescope").setup({
+                defaults = {
+                    mappings = { i = { ["<C-v>"] = false } },
+                },
+                extensions = {
+                    ["ui-select"] = { require("telescope.themes").get_dropdown({}) },
+                },
+            })
+
+            -- Enable telescope extensions, if they are installed
+            pcall(require("telescope").load_extension, "fzf")
+            pcall(require("telescope").load_extension, "ui-select")
+        end,
+    },
+}
+require("lazy").setup(plugins, {
+    root = root .. "/plugins",
 })
--- WARN: Do all plugin setup, test runs, reproductions, etc. AFTER calling setup with a list of plugins!
--- Basically, do all that stuff AFTER this line.
-vim.g.compile_mode = {}

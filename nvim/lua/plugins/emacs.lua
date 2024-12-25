@@ -1,4 +1,13 @@
 return {
+    {
+        "https://git.sr.ht/~swaits/scratch.nvim",
+        lazy = true,
+        cmd = {
+            "Scratch",
+            "ScratchSplit",
+        },
+        opts = {},
+    },
     { "tpope/vim-abolish" },
     {
         "ej-shafran/compile-mode.nvim",

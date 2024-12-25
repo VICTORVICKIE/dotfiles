@@ -7,19 +7,15 @@ return {
     },
     {
         "olimorris/persisted.nvim",
-        commit = "2b4f192",
         config = function()
             local persisted = require("persisted")
-            require("telescope").load_extension("persisted")
-            vim.keymap.set("n", "<Leader>ts", function()
-                vim.cmd("Telescope persisted")
-            end, { desc = "session" })
 
             persisted.setup({
                 autostart = true,
                 should_save = function()
                     local excluded_filetypes = {
                         "alpha",
+                        "neo-tree",
                         "mason",
                         "lazy",
                     }
@@ -33,12 +29,21 @@ return {
                     return true
                 end,
             })
+
+            require("telescope").load_extension("persisted")
+
+            vim.keymap.set("n", "<Leader>ts", function()
+                vim.cmd("Telescope persisted")
+            end, { desc = "session" })
+
             local group = vim.api.nvim_create_augroup("PersistedHooks", {})
 
             vim.api.nvim_create_autocmd("User", {
                 pattern = "PersistedTelescopeLoadPre",
                 group = group,
                 callback = function()
+                    vim.lsp.stop_client(vim.lsp.get_clients())
+                    vim.cmd("Neotree filesystem close")
                     vim.cmd("DelHidBufs") -- ../commands.lua
                     persisted.save({ session = vim.g.persisted_loaded_session })
                     vim.cmd("%bd!")
@@ -58,7 +63,7 @@ return {
 
                     if
                         fn.getbufvar(buf, "&modifiable") == 1
-                        and utils.not_in(fn.getbufvar(buf, "&filetype"), { "harpoon", "oil" })
+                        and utils.not_in(fn.getbufvar(buf, "&filetype"), { "harpoon", "oil", "neo-tree" })
                     then
                         return true -- met condition(s), can save
                     end

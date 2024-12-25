@@ -46,6 +46,7 @@ opt.list = true
 opt.listchars = { tab = "» ", trail = "·", nbsp = "␣", eol = "↲" }
 
 -- Behaviour
+opt.whichwrap:append("<,>,[,]")
 opt.hidden = true
 opt.errorbells = false
 opt.swapfile = false
@@ -66,14 +67,15 @@ opt.updatetime = 250
 opt.timeoutlen = 500
 -- Shell
 if vim.fn.has("win32") == 1 and vim.fn.executable("pwsh") == 1 then
-    opt.ff = "dos"
-    opt.shell = "pwsh"
-    opt.shellcmdflag = "-NoLogo -ExecutionPolicy RemoteSigned -Command "
-    opt.shellquote = ""
-    opt.shellxquote = ""
-    opt.shellpipe = "| Out-File -Encoding UTF8 %s>"
-    opt.shellredir = "| Out-File -Encoding UTF8 %s"
+    -- opt.ff = "dos"
+    vim.opt.shell = vim.fn.executable("pwsh") == 1 and "pwsh" or "powershell"
+    vim.opt.shellcmdflag =
+        "-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;"
+    vim.opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
+    vim.opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+    vim.opt.shellquote = ""
+    vim.opt.shellxquote = ""
 elseif vim.fn.has("wsl") then
-    opt.ff = "unix"
+    -- opt.ff = "unix"
     opt.shell = "bash -l"
 end

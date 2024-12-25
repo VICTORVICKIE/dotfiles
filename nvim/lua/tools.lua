@@ -40,18 +40,18 @@ local formatters = {
         name = "latexindent",
         filetypes = { "tex" },
     },
-    isort = {
-        name = "isort",
-        filetypes = { "python" },
-    },
-    black = {
-        name = "black",
-        filetypes = { "python" },
-        args = {
-            "--line-length",
-            "79",
-        },
-    },
+    -- isort = {
+    --     name = "isort",
+    --     filetypes = { "python" },
+    -- },
+    -- black = {
+    --     name = "black",
+    --     filetypes = { "python" },
+    --     args = {
+    --         "--line-length",
+    --         "79",
+    --     },
+    -- },
     clang_format = {
         name = "clang-format",
         filetypes = { "c", "cpp" },
@@ -92,13 +92,35 @@ local lang_servers = {
             svelte = { plugin = { svelte = { format = { config = { printWidth = 120, bracketSameLine = true } } } } },
         },
     },
-    pyright = {
-        name = "pyright",
-        settings = {
-            python = {
-                pythonPath = python_path(),
+    ruff = {
+        name = "ruff",
+        config = {
+            trace = "messages",
+            init_options = {
+                settings = {
+                    logLevel = "debug",
+                },
             },
         },
+    },
+    pyright = {
+        name = "pyright",
+        before_init = function(_, config)
+            local pythonPath = python_path()
+            config.settings.python.pythonPath = pythonPath
+        end,
+        settings = {
+            python = {
+                analysis = {
+                    autoSearchPaths = true,
+                },
+            },
+        },
+        -- settings = {
+        --     python = {
+        --         pythonPath = python_path(),
+        --     },
+        -- },
     },
     html = {
         name = "html",

@@ -21,7 +21,7 @@ if ($IsWindows) {
     function export { $env:Path += ';' + $args }
     Set-PSReadLineKeyHandler -Chord Ctrl-a -Function BeginningOfLine
     Set-PSReadLineKeyHandler -Chord Ctrl-e -Function EndOfLine
-}
+} 
 
 $env:VIRTUAL_ENV_DISABLE_PROMPT = 1
 
@@ -49,3 +49,9 @@ if ([System.Console]::IsOutputRedirected){
 
 Set-PSReadLineOption -EditMode Windows
 
+fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
+
+if (Test-Path "C:\Users\SVick\.jabba\jabba.ps1") { . "C:\Users\SVick\.jabba\jabba.ps1" }
+
+$env:ROSHN_READ_REGISTRY_TOKEN="glpat-JYepPDFeUrDpq-DrymRv"
+$env:IPWORKS3DS_BUILD_CONFIG="Debug"

@@ -1,0 +1,15 @@
+{
+	"persistedWindowLayouts" : 
+	[
+		{
+			"initialPosition" : "0,-8",
+			"initialSize" : 
+			{
+				"height" : 1001.0,
+				"width" : 1920.0
+			},
+			"launchMode" : "maximized",
+			"tabLayout" : []
+		}
+	]
+}
