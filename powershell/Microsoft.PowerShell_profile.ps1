@@ -53,5 +53,3 @@ fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
 
 if (Test-Path "C:\Users\SVick\.jabba\jabba.ps1") { . "C:\Users\SVick\.jabba\jabba.ps1" }
 
-$env:ROSHN_READ_REGISTRY_TOKEN="glpat-JYepPDFeUrDpq-DrymRv"
-$env:IPWORKS3DS_BUILD_CONFIG="Debug"

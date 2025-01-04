@@ -152,11 +152,7 @@ return {
                             inactive = { fg = c.fg_gutter }, -- Color for inactive tab.
                         },
                         fmt = function(name, ctx)
-                            if string.find(name, "Neogit") then
-                                return "Neogit"
-                            else
-                                return string.upper(vim.fs.basename(vim.fn.getcwd(-1, ctx.tabnr)))
-                            end
+                            return string.upper(vim.fs.basename(vim.fn.getcwd(-1, ctx.tabnr)))
                         end,
                     },
                 },
@@ -193,7 +189,6 @@ return {
         })
 
         left({ "location" })
-
 
         left({
             "progress",

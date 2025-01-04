@@ -18,6 +18,7 @@ return {
                         "neo-tree",
                         "mason",
                         "lazy",
+                        "fugitive",
                     }
 
                     for _, excluded_ft in ipairs(excluded_filetypes) do
@@ -43,7 +44,6 @@ return {
                 group = group,
                 callback = function()
                     vim.lsp.stop_client(vim.lsp.get_clients())
-                    vim.cmd("Neotree filesystem close")
                     vim.cmd("DelHidBufs") -- ../commands.lua
                     persisted.save({ session = vim.g.persisted_loaded_session })
                     vim.cmd("%bd!")
@@ -63,7 +63,7 @@ return {
 
                     if
                         fn.getbufvar(buf, "&modifiable") == 1
-                        and utils.not_in(fn.getbufvar(buf, "&filetype"), { "harpoon", "oil", "neo-tree" })
+                        and utils.not_in(fn.getbufvar(buf, "&filetype"), { "harpoon", "oil", "neo-tree", "fugitive" })
                     then
                         return true -- met condition(s), can save
                     end
