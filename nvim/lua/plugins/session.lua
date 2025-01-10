@@ -15,7 +15,6 @@ return {
                 should_save = function()
                     local excluded_filetypes = {
                         "alpha",
-                        "neo-tree",
                         "mason",
                         "lazy",
                         "fugitive",
@@ -63,7 +62,7 @@ return {
 
                     if
                         fn.getbufvar(buf, "&modifiable") == 1
-                        and utils.not_in(fn.getbufvar(buf, "&filetype"), { "harpoon", "oil", "neo-tree", "fugitive" })
+                        and utils.not_in(fn.getbufvar(buf, "&filetype"), { "harpoon", "oil", "fugitive" })
                     then
                         return true -- met condition(s), can save
                     end
