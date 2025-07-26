@@ -25,7 +25,7 @@ local formatters = {
     },
     prettier = {
         name = "prettier",
-        filetypes = { "javascript", "typescript", "html", "css", "json", "astro" },
+        filetypes = { "javascript", "typescript", "html", "css", "json", "astro", "tsx" },
         args = {
             "--bracket-same-line",
             "--tab-width",
@@ -62,13 +62,15 @@ local formatters = {
         filetypes = { "xml" },
     },
 }
-
+local workspace_dir = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+local workspace = os.getenv("DEV") .. ".java-workspace/" .. workspace_dir
 local lang_servers = {
     rust_analyzer = {
         name = "rust_analyzer",
     },
     jdtls = {
         name = "jdtls",
+        cmd = { "jdtls", "-data", workspace },
         root_dir = require("jdtls.setup").find_root({ "mvnw", "gradlew", ".git" }),
     },
     vtsls = {
@@ -85,6 +87,11 @@ local lang_servers = {
     },
     tailwindcss = {
         name = "tailwindcss",
+        settings = {
+            tailwindCSS = {
+                colorDecorators = { enable = false },
+            },
+        },
     },
     svelte = {
         name = "svelte",

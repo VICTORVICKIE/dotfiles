@@ -8,6 +8,12 @@ New-Alias activate "./venv/Scripts/activate"
 New-Alias spython "C:\Programming\Python\python.exe"
 New-Alias spip "C:\Programming\Python\Scripts\pip.exe"
 
+function android {
+    param (
+        [int]$port
+    )
+    adb connect 192.168.0.101:$port
+}
 
 if ($IsWindows) {
     New-Alias sudo gsudo

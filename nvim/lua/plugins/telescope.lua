@@ -24,9 +24,38 @@ return {
             telescope.setup({
                 defaults = {
                     mappings = { i = { ["<C-v>"] = false } },
+                    initial_mode = "insert",
+                    hidden = true,
+                    no_ignore = true,
+                    file_ignore_patterns = {
+                        "node_modules",
+                        ".git",
+                        ".svelte-kit",
+                        ".next",
+                        "build",
+                    },
                 },
                 extensions = {
                     ["ui-select"] = { require("telescope.themes").get_dropdown({}) },
+                },
+                pickers = {
+                    find_files = {
+                        hidden = true,
+                        find_command = {
+                            "rg",
+                            "--files",
+                            "--color=never",
+                            "--no-heading",
+                            "--line-number",
+                            "--column",
+                            "--smart-case",
+                            "--hidden",
+                            "--glob",
+                            "!{.git/*,.svelte-kit/*,target/*,node_modules/*}",
+                            "--path-separator",
+                            "/",
+                        },
+                    },
                 },
             })
 

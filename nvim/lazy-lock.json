@@ -15,6 +15,7 @@
   "compile-mode.nvim": { "branch": "main", "commit": "4feef0bd6485218f50563a61140233f16561c786" },
   "conform.nvim": { "branch": "master", "commit": "70019124aa4f2e6838be9fbd2007f6d13b27a96d" },
   "fidget.nvim": { "branch": "main", "commit": "a0abbf18084b77d28bc70e24752e4f4fd54aea17" },
+  "fugitive-difftool.nvim": { "branch": "main", "commit": "e57ebbc0fb68bc8f0e2b756e8a23c8a311fa6e91" },
   "gitsigns.nvim": { "branch": "main", "commit": "68114837e81ca16d06514c3a997c9102d1b25c15" },
   "hex.nvim": { "branch": "master", "commit": "fcff75fcf43b5a6c5b471eed65b3a06c412d6020" },
   "lazy.nvim": { "branch": "main", "commit": "d8f26efd456190241afd1b0f5235fe6fdba13d4a" },
