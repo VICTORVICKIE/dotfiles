@@ -54,7 +54,7 @@ local formatters = {
     -- },
     clang_format = {
         name = "clang-format",
-        filetypes = { "c", "cpp" },
+        filetypes = { "c", "cpp", "java" },
         args = { "-style={IndentWidth: 4, AllowShortIfStatementsOnASingleLine: true, BreakBeforeBraces: Stroustrup}" },
     },
     xmlformatter = {
@@ -70,6 +70,9 @@ local lang_servers = {
     },
     jdtls = {
         name = "jdtls",
+        cmd_env = {
+            JAVA_HOME = vim.fn.system("jabba which microsoft@21"):gsub("%s+", ""),
+        },
         cmd = { "jdtls", "-data", workspace },
         root_dir = require("jdtls.setup").find_root({ "mvnw", "gradlew", ".git" }),
     },

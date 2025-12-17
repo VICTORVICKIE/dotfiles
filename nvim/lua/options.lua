@@ -49,6 +49,9 @@ opt.listchars = { tab = "» ", trail = "·", nbsp = "␣", eol = "↲" }
 opt.whichwrap:append("<,>,[,]")
 opt.hidden = true
 opt.errorbells = false
+opt.visualbell = false
+opt.belloff = "all"
+vim.g.noeb = "vb t_vb="
 opt.swapfile = false
 opt.backup = false
 opt.undodir = vim.fn.expand("~/.vim/undodir")

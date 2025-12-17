@@ -14,4 +14,5 @@ return {
             vim.fn["mkdp#util#install"]()
         end,
     },
+    { "kaarmu/typst.vim", ft = "typst", lazy = false },
 }

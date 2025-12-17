@@ -43,7 +43,7 @@ return {
                 group = group,
                 callback = function()
                     vim.lsp.stop_client(vim.lsp.get_clients())
-                    vim.cmd("DelHidBufs") -- ../commands.lua
+                    -- vim.cmd("DelHidBufs") -- ../commands.lua
                     persisted.save({ session = vim.g.persisted_loaded_session })
                     vim.cmd("%bd!")
                 end,
