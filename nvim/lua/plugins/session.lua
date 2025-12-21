@@ -28,6 +28,18 @@ return {
 
                     return true
                 end,
+                telescope = {
+                    mappings = { -- Mappings for managing sessions in Telescope
+                        copy_session = "<NOP>",
+                        change_branch = "<NOP>",
+                        delete_session = "<NOP>",
+                    },
+                    icons = { -- icons displayed in the Telescope picker
+                        selected = " ",
+                        dir = "  ",
+                        branch = " ",
+                    },
+                }
             })
 
             require("telescope").load_extension("persisted")
@@ -66,7 +78,7 @@ return {
                     then
                         return true -- met condition(s), can save
                     end
-                    return false -- can't save
+                    return false    -- can't save
                 end,
             })
         end,
