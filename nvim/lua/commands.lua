@@ -93,3 +93,26 @@ vim.api.nvim_create_user_command("DelHidBufs", function()
     end, bufinfos)
     -- print(("Deleted %d Hidden Buffers"):format(hidden))
 end, { desc = "Wipeout all buffers not shown in a window" })
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "java",
+    callback = function(args)
+        local jdtls_cmd = vim.fn.stdpath("data") .. "/mason/bin/jdtls"
+        if vim.fn.has("win32") == 1 then
+            jdtls_cmd = jdtls_cmd .. ".cmd"
+        end
+        local config = {
+            cmd_env = {
+                JAVA_HOME = vim.fn.system("jabba which microsoft@21"):gsub("%s+", ""),
+            },
+            cmd = {
+                jdtls_cmd,
+                "-data",
+                os.getenv("DEV") .. ".java-workspace/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t"),
+            },
+            root_dir = require("jdtls.setup").find_root({ "pom.xml", "build.gradle", "mvnw", "gradlew", ".git" }),
+        }
+        print(config.root_dir)
+        require("jdtls").start_or_attach(config)
+    end,
+})

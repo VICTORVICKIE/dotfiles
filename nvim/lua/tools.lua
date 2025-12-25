@@ -40,18 +40,6 @@ local formatters = {
         name = "latexindent",
         filetypes = { "tex" },
     },
-    -- isort = {
-    --     name = "isort",
-    --     filetypes = { "python" },
-    -- },
-    -- black = {
-    --     name = "black",
-    --     filetypes = { "python" },
-    --     args = {
-    --         "--line-length",
-    --         "79",
-    --     },
-    -- },
     clang_format = {
         name = "clang-format",
         filetypes = { "c", "cpp", "java" },
@@ -62,26 +50,17 @@ local formatters = {
         filetypes = { "xml" },
     },
 }
-local workspace_dir = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
-local workspace = os.getenv("DEV") .. ".java-workspace/" .. workspace_dir
 local lang_servers = {
     rust_analyzer = {
         name = "rust_analyzer",
     },
     jdtls = {
         name = "jdtls",
-        cmd_env = {
-            JAVA_HOME = vim.fn.system("jabba which microsoft@21"):gsub("%s+", ""),
-        },
-        cmd = { "jdtls", "-data", workspace },
-        root_dir = require("jdtls.setup").find_root({ "mvnw", "gradlew", ".git" }),
+        manual = true,
     },
     vtsls = {
         name = "vtsls",
     },
-    --◍ css-lsp cssls (keywords: css, scss, less)
-    --◍ css-variables-language-server css_variables (keywords: css, scss, less)
-    --
     css_variables = {
         name = "css-variables-language-server",
     },

@@ -100,6 +100,9 @@ return { -- LSP Configuration & Plugins
             handlers = {
                 function(server_name)
                     local server = servers[server_name] or {}
+                    if server.manual then
+                        return
+                    end
                     require("lspconfig")[server_name].setup(vim.tbl_deep_extend("force", {}, {
                         -- cmd = server.cmd,
                         -- settings = server.settings,
